@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:what_next/src/login/fire_auth.dart';
 import 'package:what_next/src/login/profile_page.dart';
 import 'package:what_next/src/recommend/recommends_page.dart';
@@ -34,10 +35,8 @@ class _LoginPageState extends State<LoginPage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => RecommendsPage(),
-        ),
+      Get.to(
+        RecommendsPage(),
       );
     }
 
@@ -66,11 +65,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (user != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => ProfilePage(user: user),
-          ),
-        );
+        Get.to(ProfilePage(user: user));
       }
     }
   }
@@ -84,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Firebase Authentication'),
+          title: Text('What Next - Sign In'),
         ),
         body: FutureBuilder(
           future: _initializeFirebase(),
@@ -166,12 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                                         Expanded(
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RegisterPage(),
-                                                ),
-                                              );
+                                              Get.to(RegisterPage());
                                             },
                                             child: Text(
                                               'Register',
