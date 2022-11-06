@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:what_next/src/edit/star_rating.dart';
+import 'package:what_next/src/models/review.dart';
 
 class ShowWidget extends StatelessWidget {
-  const ShowWidget(
-      {super.key,
-      required this.title,
-      required this.year,
-      required this.image,
-      required this.rating,
-      required this.score});
+  const ShowWidget({
+    super.key,
+    required this.review,
+  });
 
-  final String title;
-  final int year;
-  final String image;
-  final int rating;
-  final int score;
+  final Review review;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +17,16 @@ class ShowWidget extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            Image.network(image),
-            SizedBox(height: 10),
-            Text(title),
+            Image.network(
+              review.fullImageUrl,
+              height: 200,
+            ),
+            const SizedBox(height: 10),
+            Text(review.title),
+            const SizedBox(height: 10),
+            StarRating(
+              rating: review.rating,
+            )
           ],
         ),
       ),

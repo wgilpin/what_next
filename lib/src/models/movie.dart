@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 // https://github.com/kudpig/flutter_api_json_sample_at_movie/blob/main/lib/home/movie.dart
 
 class Movie {
@@ -30,4 +32,11 @@ class Movie {
   String toJson() => json.encode(toMap());
 
   factory Movie.fromJson(String source) => Movie.fromMap(json.decode(source));
+
+  static Movie fromSnapshot(DocumentSnapshot snapshot) {
+    return Movie(
+      title: snapshot['title'] ?? '',
+      posterPath: snapshot['poster_path'] ?? '',
+    );
+  }
 }
