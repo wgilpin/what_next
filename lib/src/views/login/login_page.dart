@@ -6,11 +6,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:what_next/src/login/fire_auth.dart';
-import 'package:what_next/src/login/profile_page.dart';
-import 'package:what_next/src/recommend/recommends_page.dart';
-import 'package:what_next/src/login/register_page.dart';
-import 'package:what_next/src/login/validator.dart';
+import 'package:what_next/src/views/login/fire_auth.dart';
+import 'package:what_next/src/views/login/profile_page.dart';
+import 'package:what_next/src/views/recommend/recommends_page.dart';
+import 'package:what_next/src/views/login/register_page.dart';
+import 'package:what_next/src/views/login/validator.dart';
 
 // ignore: use_key_in_widget_constructors
 class LoginPage extends StatefulWidget {

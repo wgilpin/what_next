@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:what_next/src/models/review.dart';
-import 'package:what_next/src/recommend/show_widget.dart';
+import 'package:what_next/src/views/recommend/show_widget.dart';
 
 class FilmStrip extends StatelessWidget {
   const FilmStrip({super.key, required this.data});

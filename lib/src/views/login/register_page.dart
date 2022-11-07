@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:what_next/src/login/profile_page.dart';
-import 'package:what_next/src/login/validator.dart';
+import 'package:what_next/src/views/login/profile_page.dart';
+import 'package:what_next/src/views/login/validator.dart';
 
 import 'fire_auth.dart';
 

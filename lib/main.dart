@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:what_next/src/login/login_page.dart';
+import 'package:what_next/src/views/login/login_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 

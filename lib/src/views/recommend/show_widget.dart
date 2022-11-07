@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:what_next/src/edit/star_rating.dart';
+import 'package:what_next/src/views/edit/star_rating.dart';
 import 'package:what_next/src/models/review.dart';
 
 class ShowWidget extends StatelessWidget {

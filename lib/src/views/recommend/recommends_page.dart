@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:what_next/src/edit/edit_show.dart';
+import 'package:what_next/src/views/edit/find_show.dart';
 import 'package:what_next/src/models/review.dart';
-import 'package:what_next/src/recommend/film_strip.dart';
+import 'package:what_next/src/views/recommend/film_strip.dart';
 
 class RecommendsPage extends StatefulWidget {
   const RecommendsPage({super.key});
@@ -26,11 +26,11 @@ class _RecommendsPageState extends State<RecommendsPage> {
       for (int c = 0; c < colCount; c++) {
         row.add(Review(
           title: 'Title $r$c',
-          movie: '1',
           posterPath: '/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg',
           logo: 'https://picsum.photos/id/${colCount * r + c}/300/200',
           rating: (1 + dates.nextInt(10)).toDouble(),
           service: 'Netflocks',
+          year: 1980 + dates.nextInt(40),
           user: FirebaseAuth.instance.currentUser?.toString() ?? '0',
           when: DateTime.now(),
         ));
@@ -64,7 +64,7 @@ class _RecommendsPageState extends State<RecommendsPage> {
       body: ListView(scrollDirection: Axis.vertical, children: rows),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(EditShowForm());
+          Get.to(FindShowForm());
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.edit),
