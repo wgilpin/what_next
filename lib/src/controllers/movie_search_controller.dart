@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/services/tmdb_api.dart';
 
 import '../models/movie.dart';
 import 'movies_exception.dart';
@@ -13,15 +14,9 @@ class MovieSearchController extends GetxController {
 
   Future<void> search({required String text}) async {
     try {
-      final url =
-          "https://api.themoviedb.org/3/search/movie?api_key=$_apiKey&query=${Uri.encodeComponent(text)}";
-      print('url: $url');
-      final response = await _dio.get(url);
-      final results = List<Map<String, dynamic>>.from(response.data['results']);
+      final interimResults = await MovieService().search(text: text);
 
-      // order results by exact match then byyear
-      var interimResults =
-          results.map((movieData) => Movie.fromMap(movieData)).toList();
+      // order results by exact match then by year
       List<Movie> exactMatches = interimResults
           .where((m) => m.title.toLowerCase() == text.toLowerCase())
           .toList();
@@ -29,12 +24,11 @@ class MovieSearchController extends GetxController {
           .where((m) => m.title.toLowerCase() != text.toLowerCase())
           .toList();
       otherMatches.sort((a, b) => b.year.compareTo(a.year));
-      searchResults.value = exactMatches + otherMatches;
-
+      
       // update getX state
+      searchResults.value = exactMatches + otherMatches;
       update();
 
-      print('found ${searchResults.length} movies');
     } on DioError catch (dioError) {
       throw MoviesException.fromDioError(dioError);
     }
