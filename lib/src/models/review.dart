@@ -1,38 +1,49 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:what_next/src/models/movie.dart';
+import 'package:what_next/src/views/login/fire_auth.dart';
 
-// https://github.com/kudpig/flutter_api_json_sample_at_movie/blob/main/lib/home/movie.dart
-
-class Review {
-  String title;
-  String posterPath;
-  String logo;
-  String movie;
-  double rating;
-  String service;
-  String user;
-  DateTime when;
+class Review extends Movie {
+  String logo = '';
+  double rating = 0.0;
+  String service = '';
+  String user = '';
+  DateTime? when;
 
   Review({
-    required this.title,
-    required this.posterPath,
+    required String title,
+    required String posterPath,
+    required int year,
     required this.logo,
-    required this.movie,
     required this.rating,
     required this.service,
     required this.user,
     required this.when,
-  });
+  }) : super(title: title, posterPath: posterPath, year: year);
 
-  String get fullImageUrl => 'https://image.tmdb.org/t/p/w200$posterPath';
+  Review.fromMovie(Movie movie)
+      : super(
+            title: movie.title,
+            posterPath: movie.posterPath,
+            year: movie.year) {
+    title = movie.title;
+    posterPath = movie.posterPath;
+    year = movie.year;
+    logo = '';
+    rating = 0.0;
+    service = '';
+    user = FirebaseAuth.instance.currentUser?.uid ?? '';
+    when = DateTime.now();
+  }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'poster_path': posterPath,
       'logo': logo,
-      'movie': movie,
       'rating': rating,
       'service': service,
       'user': user,
@@ -45,14 +56,15 @@ class Review {
       title: map['title'] ?? '',
       posterPath: map['poster_path'] ?? '',
       logo: map['logo'] ?? '',
-      movie: map['movie'] ?? '',
       rating: map['rating'],
       service: map['service'] ?? '',
       user: map['user'],
       when: map['when'],
+      year: map['year'],
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory Review.fromJson(String source) => Review.fromMap(json.decode(source));
@@ -61,8 +73,8 @@ class Review {
     return Review(
       title: snapshot['title'] ?? '',
       posterPath: snapshot['poster_path'] ?? '',
+      year: snapshot['year'],
       logo: snapshot['logo'] ?? '',
-      movie: snapshot['movie'] ?? '',
       rating: snapshot['rating'],
       service: snapshot['service'] ?? '',
       user: snapshot['user'],
