@@ -7,10 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Movie {
   String title;
   String posterPath;
+  int year;
 
   Movie({
     required this.title,
     required this.posterPath,
+    required this.year,
   });
 
   String get fullImageUrl => 'https://image.tmdb.org/t/p/w200$posterPath';
@@ -19,6 +21,7 @@ class Movie {
     return {
       'title': title,
       'poster_path': posterPath,
+      'release_date': year,
     };
   }
 
@@ -26,6 +29,7 @@ class Movie {
     return Movie(
       title: map['title'] ?? '',
       posterPath: map['poster_path'] ?? '',
+      year: int.tryParse(map['release_date'].substring(0, 4)) ?? 0,
     );
   }
 
@@ -37,6 +41,7 @@ class Movie {
     return Movie(
       title: snapshot['title'] ?? '',
       posterPath: snapshot['poster_path'] ?? '',
+      year: int.tryParse(snapshot['release_date'].substring(0, 4)) ?? 0,
     );
   }
 }

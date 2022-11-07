@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:what_next/src/controllers/movie_search_controller.dart';
 import 'package:what_next/src/edit/text_edit.dart';
 
+import '../models/movie.dart';
+
 class EditShowForm extends StatefulWidget {
   const EditShowForm({super.key});
 
@@ -51,12 +53,13 @@ class _EditShowFormState extends State<EditShowForm> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Processing Data')),
                             );
-                            // TODO: find
                             await searcher.search(text: searchText);
-                            print(searcher.searchResults);
+                            print([
+                              for (var r in searcher.searchResults) r.title
+                            ]);
                           }
                         },
-                        child: const Text('Save'),
+                        child: const Text('Search'),
                       ),
                       const SizedBox(
                         width: 20,
@@ -70,18 +73,26 @@ class _EditShowFormState extends State<EditShowForm> {
                     ],
                   ),
                   Expanded(
-                    child: GetBuilder<MovieSearchController>(
-                      builder: (controller) {
-                        return ListView.builder(
-                          itemCount: controller.searchResults.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title:
-                                  Text(controller.searchResults[index].title),
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GetBuilder<MovieSearchController>(
+                          builder: (controller) {
+                            return ListView.builder(
+                              itemCount: controller.searchResults.length,
+                              itemBuilder: (context, index) {
+                                Movie movie = controller.searchResults[index];
+                                return ListTile(
+                                  title: Text(movie.title),
+                                  subtitle: Text(movie.year.toString()),
+                                  trailing: const Icon(Icons.chevron_right),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   ),
                 ],
