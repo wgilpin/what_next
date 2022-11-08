@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/controllers/auth_controller.dart';
+import 'package:what_next/src/controllers/bindings/auth_binding.dart';
+import 'package:what_next/src/utils/root.dart';
 import 'package:what_next/src/views/login/login_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         title: 'What Next',
+        initialBinding: AuthBinding(),
         theme: ThemeData(
           primarySwatch: Colors.blue,
           // Define the default brightness and colors.
@@ -43,6 +47,6 @@ class MyApp extends StatelessWidget {
             bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           ),
         ),
-        home: LoginPage());
+        home: Root());
   }
 }

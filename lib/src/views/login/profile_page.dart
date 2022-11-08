@@ -2,29 +2,17 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:what_next/src/views/login/fire_auth.dart';
+import 'package:get/get.dart';
+import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/views/login/login_page.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends GetWidget<AuthController> {
   final User user;
 
-  const ProfilePage({required this.user});
+  ProfilePage({required this.user});
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  bool _isSendingVerification = false;
-  bool _isSigningOut = false;
-
-  late User _currentUser;
-
-  @override
-  void initState() {
-    _currentUser = widget.user;
-    super.initState();
-  }
+  var _isSendingVerification = false.obs;
+  var _isSigningOut = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +25,16 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'NAME: ${_currentUser.displayName}',
+              'NAME: ${controller.user?.displayName}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(height: 16.0),
             Text(
-              'EMAIL: ${_currentUser.email}',
+              'EMAIL: ${controller.user?.email}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(height: 16.0),
-            _currentUser.emailVerified
+            controller.user!.emailVerified
                 ? Text(
                     'Email verified',
                     style: Theme.of(context)
@@ -62,20 +50,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         .copyWith(color: Colors.red),
                   ),
             SizedBox(height: 16.0),
-            _isSendingVerification
+            _isSendingVerification.value
                 ? CircularProgressIndicator()
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          setState(() {
-                            _isSendingVerification = true;
-                          });
-                          await _currentUser.sendEmailVerification();
-                          setState(() {
-                            _isSendingVerification = false;
-                          });
+                          await controller.verifyByEmail();
+                          _isSendingVerification.value = true;
                         },
                         child: Text('Verify email'),
                       ),
@@ -83,42 +66,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       IconButton(
                         icon: Icon(Icons.refresh),
                         onPressed: () async {
-                          User? user = await FireAuth.refreshUser(_currentUser);
-
-                          if (user != null) {
-                            setState(() {
-                              _currentUser = user;
-                            });
-                          }
+                          await controller.refreshUser();
                         },
                       ),
                     ],
                   ),
             SizedBox(height: 16.0),
-            _isSigningOut
+            _isSigningOut.value
                 ? CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: () async {
-                      setState(() {
-                        _isSigningOut = true;
-                      });
+                      _isSigningOut.value = true;
                       await FirebaseAuth.instance.signOut();
-                      setState(() {
-                        _isSigningOut = false;
-                      });
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
+                      _isSigningOut.value = false;
+                      Get.to(LoginPage());
                     },
-                    child: Text('Sign out'),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
+                    child: Text('Sign out'),
                   ),
           ],
         ),
