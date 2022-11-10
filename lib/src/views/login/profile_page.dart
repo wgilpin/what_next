@@ -7,12 +7,10 @@ import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/views/login/login_page.dart';
 
 class ProfilePage extends GetWidget<AuthController> {
-  final User user;
+  ProfilePage();
 
-  ProfilePage({required this.user});
-
-  var _isSendingVerification = false.obs;
-  var _isSigningOut = false.obs;
+  final _isSendingVerification = false.obs;
+  final _isSigningOut = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -42,35 +40,39 @@ class ProfilePage extends GetWidget<AuthController> {
                         .bodyText1!
                         .copyWith(color: Colors.green),
                   )
-                : Text(
-                    'Email not verified',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.red),
-                  ),
+                : Column(
+                  children: [
+                    Text(
+                        'Email not verified',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Colors.red),
+                      ),
+                  ],
+                ),
             SizedBox(height: 16.0),
             _isSendingVerification.value
-                ? CircularProgressIndicator()
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          await controller.verifyByEmail();
-                          _isSendingVerification.value = true;
-                        },
-                        child: Text('Verify email'),
+                    ? CircularProgressIndicator()
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              await controller.verifyByEmail();
+                              _isSendingVerification.value = true;
+                            },
+                            child: Text('Verify email'),
+                          ),
+                          SizedBox(width: 8.0),
+                          IconButton(
+                            icon: Icon(Icons.refresh),
+                            onPressed: () async {
+                              await controller.refreshUser();
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 8.0),
-                      IconButton(
-                        icon: Icon(Icons.refresh),
-                        onPressed: () async {
-                          await controller.refreshUser();
-                        },
-                      ),
-                    ],
-                  ),
             SizedBox(height: 16.0),
             _isSigningOut.value
                 ? CircularProgressIndicator()
