@@ -1,42 +1,49 @@
 import 'package:flutter/material.dart';
 
-// https://www.folkstalk.com/2022/09/create-star-rating-widget-in-flutter-with-code-examples.html
-
 typedef RatingChangeCallback = void Function(double rating);
 
-class StarRating extends StatelessWidget {
+class StarRating extends StatefulWidget {
   final int starCount;
-  final double rating;
+  double rating;
   final RatingChangeCallback? onRatingChanged;
   final Color? color;
-
-  const StarRating(
-      {this.starCount = 5,
-      this.rating = .0,
+  StarRating(
+      {super.key,
+      this.starCount = 5,
+      this.rating = 0.0,
       this.onRatingChanged,
       this.color});
 
+  @override
+  State<StarRating> createState() => _StarRatingState();
+}
+
+class _StarRatingState extends State<StarRating> {
   Widget buildStar(BuildContext context, int index) {
     Icon icon;
-    if (index >= rating) {
+    if (index >= widget.rating) {
       icon = Icon(
         Icons.star_border,
-        color: Theme.of(context).buttonColor,
+        color: Theme.of(context).colorScheme.secondary,
       );
-    } else if (index > rating - 1 && index < rating) {
+    } else if (index > widget.rating - 1 && index < widget.rating) {
       icon = Icon(
         Icons.star_half,
-        color: color ?? Theme.of(context).primaryColor,
+        color: widget.color ?? Theme.of(context).colorScheme.secondary,
       );
     } else {
       icon = Icon(
         Icons.star,
-        color: color ?? Theme.of(context).primaryColor,
+        color: widget.color ?? Theme.of(context).colorScheme.secondary,
       );
     }
     return InkResponse(
-      onTap:
-          onRatingChanged == null ? null : () => onRatingChanged!(index + 1.0),
+      onTap: widget.onRatingChanged == null
+          ? null
+          : () => setState(() {
+                widget.rating = index + 1.0;
+                widget.onRatingChanged!(index + 1.0);
+              }),
       child: icon,
     );
   }
@@ -44,7 +51,7 @@ class StarRating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        children:
-            List.generate(starCount, (index) => buildStar(context, index)));
+        children: List.generate(
+            widget.starCount, (index) => buildStar(context, index)));
   }
 }
