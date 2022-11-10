@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/views/login/login_page.dart';
-import 'package:what_next/src/views/login/profile_page.dart';
+import 'package:what_next/src/views/recommend/recommends_page.dart';
 
 class Root extends GetWidget<AuthController> {
   @override
@@ -11,7 +11,7 @@ class Root extends GetWidget<AuthController> {
       if (controller.user == null) {
         return LoginPage();
       } else {
-        return ProfilePage(user: controller.user!);
+        return const RecommendsPage();
       }
     });
   }
