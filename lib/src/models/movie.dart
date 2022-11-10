@@ -26,11 +26,23 @@ class Movie {
   }
 
   factory Movie.fromMap(Map<String, dynamic> map) {
-    return Movie(
+    int year = 0;
+    if (map.containsKey('release_date')) {
+      try {
+        year = map['release_date'].toString().length >= 4
+            ? int.parse(map['release_date'].toString().substring(0, 4))
+            : 0;
+      } on Exception {
+        print('Year Exception $map');
+        year = 0;
+      }
+    }
+    var res = Movie(
       title: map['title'] ?? '',
       posterPath: map['poster_path'] ?? '',
-      year: int.tryParse(map['release_date'].substring(0, 4)) ?? 0,
+      year: year,
     );
+    return res;
   }
 
   String toJson() => json.encode(toMap());
