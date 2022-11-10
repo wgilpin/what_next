@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:what_next/src/controllers/firestore_db.dart';
 import 'package:what_next/src/views/edit/save_cancel.dart';
 import 'package:what_next/src/views/edit/star_rating.dart';
 
 import '../../models/review.dart';
 
 class EditReview extends StatelessWidget {
-  const EditReview({super.key, required this.review});
+  EditReview({super.key, required this.review});
 
   final Review review;
+  final TextEditingController _commentController = TextEditingController();
+
+  _doSave() async {
+    review.comment = _commentController.text;
+    await FirestoreDB().addReview(review);
+    _commentController.clear();
+    Get.snackbar("Saved", review.title, snackPosition: SnackPosition.BOTTOM);
+    Get.back();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +42,24 @@ class EditReview extends StatelessWidget {
                   children: [
                     StarRating(
                       rating: review.rating,
+                      onRatingChanged: (rating) => {
+                        review.rating = rating,
+                      },
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-                const SaveCancel(saveLbl: 'Save', cancelLbl: 'Cancel'),
+                TextFormField(
+                  controller: _commentController,
+                  decoration:
+                      const InputDecoration(hintText: 'Add your comment'),
+                ),
+                const SizedBox(height: 20),
+                SaveCancel(
+                  saveLbl: 'Save',
+                  onSave: _doSave,
+                  cancelLbl: 'Cancel',
+                ),
               ],
             ),
           ),

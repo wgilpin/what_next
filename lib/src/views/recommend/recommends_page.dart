@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
 import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/views/recommend/film_strip.dart';
@@ -30,9 +32,10 @@ class _RecommendsPageState extends State<RecommendsPage> {
           logo: 'https://picsum.photos/id/${colCount * r + c}/300/200',
           rating: (1 + dates.nextInt(10)).toDouble(),
           service: 'Netflocks',
+          comment: 'Comment on show #${colCount * r + c}',
           year: 1980 + dates.nextInt(40),
           user: FirebaseAuth.instance.currentUser?.toString() ?? '0',
-          when: DateTime.now(),
+          when: Timestamp.now(),
         ));
       }
       list.add(row);
@@ -62,9 +65,10 @@ class _RecommendsPageState extends State<RecommendsPage> {
         title: const Text('What Next'),
       ),
       body: ListView(scrollDirection: Axis.vertical, children: rows),
+      drawer: getDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(FindShowForm());
+          Get.to(const FindShowForm());
         },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.edit),
