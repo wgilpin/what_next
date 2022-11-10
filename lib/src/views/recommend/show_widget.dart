@@ -12,8 +12,8 @@ class ShowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 300),
       child: Card(
         child: Column(
           children: [
