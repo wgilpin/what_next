@@ -3,19 +3,20 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:what_next/src/models/movie.dart';
-import 'package:what_next/src/views/login/fire_auth.dart';
 
 class Review extends Movie {
   String logo = '';
   double rating = 0.0;
   String service = '';
   String user = '';
-  DateTime? when;
+  Timestamp? when;
+  String comment = '';
 
   Review({
     required String title,
     required String posterPath,
     required int year,
+    required this.comment,
     required this.logo,
     required this.rating,
     required this.service,
@@ -34,8 +35,9 @@ class Review extends Movie {
     logo = '';
     rating = 0.0;
     service = '';
+    comment = '';
     user = FirebaseAuth.instance.currentUser?.uid ?? '';
-    when = DateTime.now();
+    when = Timestamp.now();
   }
 
   @override
@@ -48,6 +50,7 @@ class Review extends Movie {
       'service': service,
       'user': user,
       'when': when,
+      'comment': comment,
     };
   }
 
@@ -61,6 +64,7 @@ class Review extends Movie {
       user: map['user'],
       when: map['when'],
       year: map['year'],
+      comment: map['comment'] ?? '',
     );
   }
 
@@ -70,15 +74,17 @@ class Review extends Movie {
   factory Review.fromJson(String source) => Review.fromMap(json.decode(source));
 
   static Review fromSnapshot(DocumentSnapshot snapshot) {
+    var map = snapshot.data() as Map<String, dynamic>;
     return Review(
-      title: snapshot['title'] ?? '',
-      posterPath: snapshot['poster_path'] ?? '',
-      year: snapshot['year'],
-      logo: snapshot['logo'] ?? '',
-      rating: snapshot['rating'],
-      service: snapshot['service'] ?? '',
-      user: snapshot['user'],
-      when: snapshot['when'],
+      title: map['title'] ?? '',
+      posterPath: map['poster_path'] ?? '',
+      year: map['year'] ?? 0,
+      logo: map['logo'] ?? '',
+      rating: map['rating'],
+      service: map['service'] ?? '',
+      user: map['user'],
+      when: map['when'],
+      comment: map['comment'] ?? '',
     );
   }
 }
