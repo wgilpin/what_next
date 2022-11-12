@@ -24,8 +24,10 @@ class ShowWidget extends StatelessWidget {
             const SizedBox(height: 10),
             Text(review.title),
             const SizedBox(height: 10),
-            StarRating(
-              rating: review.rating,
+            Center(
+              child: StarRating(
+                rating: review.rating,
+              ),
             )
           ],
         ),

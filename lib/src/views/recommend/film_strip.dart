@@ -9,15 +9,26 @@ class FilmStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        // shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return ShowWidget(review:  data[index]);
-        },
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: SizedBox(
+            height: 280,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ShowWidget(
+                  review: data[index],
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+      ],
     );
   }
 }

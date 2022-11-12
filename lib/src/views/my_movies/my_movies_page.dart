@@ -7,7 +7,7 @@ import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
 import 'package:what_next/src/views/recommend/show_widget.dart';
 
-class MyMoviesPage extends GetWidget<MyReviewsController> {
+class MyMoviesPage extends GetWidget<MyReviewsCtl> {
   const MyMoviesPage({super.key});
 
   @override
