@@ -67,7 +67,7 @@ class RecommendsPage extends StatelessWidget {
           Get.to(const FindShowForm());
         },
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.edit),
+        child: const Icon(Icons.add),
       ),
     );
   }
