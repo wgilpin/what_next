@@ -13,7 +13,7 @@ class FilmStrip extends StatelessWidget {
       children: [
         Expanded(
           child: SizedBox(
-            height: 280,
+            height: 300,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: data.length,

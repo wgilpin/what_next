@@ -13,23 +13,32 @@ class ShowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 300),
+      constraints: const BoxConstraints(maxHeight: 300, maxWidth: 180),
       child: Card(
-        child: Column(
-          children: [
-            Image.network(
-              review.fullImageUrl,
-              height: 200,
-            ),
-            const SizedBox(height: 10),
-            Text(review.title),
-            const SizedBox(height: 10),
-            Center(
-              child: StarRating(
-                rating: review.rating,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Image.network(
+                review.fullImageUrl,
+                height: 200,
               ),
-            )
-          ],
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  review.title,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: StarRating(
+                  rating: review.rating,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
