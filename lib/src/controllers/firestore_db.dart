@@ -18,12 +18,32 @@ class FirestoreDB {
         final reviewModel = Review.fromSnapshot(review);
         reviews.add(reviewModel);
       }
+      print('review stream:${reviews.length}');
+      return reviews;
+    });
+  }
+
+  Stream<List<Review>> recommendsStream(String uid) {
+    print('in recommendsStream');
+    return _firestore
+        .collection('reviews')
+        .where('user', isNotEqualTo: uid)
+        .orderBy('user')
+        .orderBy('when', descending: true)
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<Review> reviews = [];
+      for (var review in query.docs) {
+        final reviewModel = Review.fromSnapshot(review);
+        reviews.add(reviewModel);
+      }
+      print('recommends stream:${reviews.length}');
       return reviews;
     });
   }
 
   Future<void> addReview(Review review) {
-    var authController = Get.find<AuthController>();
+    var authController = Get.find<AuthCtl>();
     if (authController.user == null) {
       return Future.error('User not logged in');
     }

@@ -6,14 +6,19 @@ import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/utils/root.dart';
 import 'package:what_next/src/views/login/register_page.dart';
+import 'package:what_next/src/views/recommend/recommends_page.dart';
 
-class LoginPage extends GetWidget<AuthController> {
+class LoginPage extends GetWidget<AuthCtl> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   Future<void> doLogin() async {
     await controller.login(emailController.text, passwordController.text);
-    Get.offAll(Root);
+    if (controller.user != null) {
+      Get.offAll(RecommendsPage());
+    } else {
+      Get.offAll(LoginPage());
+    }
   }
 
   @override

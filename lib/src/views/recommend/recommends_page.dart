@@ -1,70 +1,66 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/controllers/my_reviews_controller.dart';
+import 'package:what_next/src/controllers/recommends_controller.dart';
+import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
-import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/views/recommend/film_strip.dart';
 
-class RecommendsPage extends StatefulWidget {
-  const RecommendsPage({super.key});
+class RecommendsPage extends StatelessWidget {
+  final MyReviewsCtl myReviewsController = Get.put(MyReviewsCtl());
+  final RecommendsCtl recommendsController = Get.put(RecommendsCtl());
 
-  @override
-  State<RecommendsPage> createState() => _RecommendsPageState();
-}
+  RecommendsPage({super.key});
 
-class _RecommendsPageState extends State<RecommendsPage> {
-  // generate random array of maps
-  List<List<Review>> _generateRandomList(int size) {
-    List<List<Review>> list = [];
-    int rowCount = 4;
-    int colCount = 6;
-    var dates = Random();
-    for (int r = 0; r < rowCount; r++) {
-      List<Review> row = [];
-      for (int c = 0; c < colCount; c++) {
-        row.add(Review(
-          title: 'Title $r$c',
-          posterPath: '/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg',
-          logo: 'https://picsum.photos/id/${colCount * r + c}/300/200',
-          rating: (1 + dates.nextInt(10)).toDouble(),
-          service: 'Netflocks',
-          comment: 'Comment on show #${colCount * r + c}',
-          year: 1980 + dates.nextInt(40),
-          user: FirebaseAuth.instance.currentUser?.toString() ?? '0',
-          when: Timestamp.now(),
-        ));
-      }
-      list.add(row);
-    }
-
-    return list;
-  }
-
-  List<List<Review>> data = [];
-
-  _RecommendsPageState() {
-    data = _generateRandomList(10);
-  }
+  final RxList<List<Review>> data = RxList<List<Review>>([]);
+  final RxList<String> labels = RxList<String>([]);
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> rows = [];
-
-    for (var i = 0; i < data.length; i++) {
-      // rows.add(Text('Row $i'));
-      // rows.add(const SizedBox(height: 10));
-      rows.add(SizedBox(height: 300, child: FilmStrip(data: data[i])));
-    }
-
+    labels.add('My Reviews');
+    data.add(myReviewsController.reviews);
+    labels.add("Other People's");
+    data.add(recommendsController.reviews);
+    data.refresh();
     return Scaffold(
       appBar: AppBar(
         title: const Text('What Next'),
       ),
-      body: ListView(scrollDirection: Axis.vertical, children: rows),
+      body: Obx(() {
+        labels.clear();
+        data.clear();
+        labels.add('My Reviews');
+        data.add(myReviewsController.reviews);
+        labels.add("Other People's");
+        data.add(recommendsController.reviews);
+        print('data: ${data.length}');
+        return data.isEmpty
+            ? const CircularProgressIndicator()
+            : ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          labels[index],
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (data[index].isEmpty)
+                          const Text('      No shows here'),
+                        if (data[index].isNotEmpty)
+                          FilmStrip(data: data[index]),
+                      ],
+                    ),
+                  );
+                });
+      }),
       drawer: getDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
