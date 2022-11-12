@@ -11,6 +11,7 @@ class Review extends Movie {
   String user = '';
   Timestamp? when;
   String comment = '';
+  String movieId = '';
 
   Review({
     required String title,
@@ -22,13 +23,15 @@ class Review extends Movie {
     required this.service,
     required this.user,
     required this.when,
-  }) : super(title: title, posterPath: posterPath, year: year);
+    required this.movieId,
+  }) : super(title: title, posterPath: posterPath, year: year, id: movieId);
 
   Review.fromMovie(Movie movie)
       : super(
             title: movie.title,
             posterPath: movie.posterPath,
-            year: movie.year) {
+            year: movie.year,
+            id: movie.id) {
     title = movie.title;
     posterPath = movie.posterPath;
     year = movie.year;
@@ -38,6 +41,7 @@ class Review extends Movie {
     comment = '';
     user = FirebaseAuth.instance.currentUser?.uid ?? '';
     when = Timestamp.now();
+    movieId = id;
   }
 
   @override
@@ -51,6 +55,7 @@ class Review extends Movie {
       'user': user,
       'when': when,
       'comment': comment,
+      'movie_id': movieId,
     };
   }
 
@@ -65,6 +70,7 @@ class Review extends Movie {
       when: map['when'],
       year: map['year'],
       comment: map['comment'] ?? '',
+      movieId: map['movie_id'] ?? '',
     );
   }
 
@@ -85,6 +91,7 @@ class Review extends Movie {
       user: map['user'],
       when: map['when'],
       comment: map['comment'] ?? '',
+      movieId: snapshot.reference.parent.id,
     );
   }
 }

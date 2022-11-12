@@ -13,7 +13,7 @@ class MyReviewsCtl extends GetxController {
   void onReady() {
     super.onReady();
     var uid = Get.find<AuthCtl>().user!.uid;
-    reviewList.bindStream(FirestoreDB().reviewStream(uid));
+    reviewList.bindStream(FirestoreDB().reviewsForUserStream(uid));
     print('MyReviewsController bound to stream');
   }
 }

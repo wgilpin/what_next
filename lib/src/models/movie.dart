@@ -9,11 +9,13 @@ class Movie {
   String title;
   String posterPath;
   int year;
+  String id;
 
   Movie({
     required this.title,
     required this.posterPath,
     required this.year,
+    required this.id,
   });
 
   String get fullImageUrl => 'https://image.tmdb.org/t/p/w200$posterPath';
@@ -23,6 +25,7 @@ class Movie {
       'title': title,
       'poster_path': posterPath,
       'release_date': year,
+      'id': id,
     };
   }
 
@@ -45,6 +48,7 @@ class Movie {
       title: map['title'] ?? map['name'] ?? 'Unnamed',
       posterPath: map['poster_path'] ?? '',
       year: year,
+      id: map['id'].toString(),
     );
     return res;
   }
@@ -58,6 +62,7 @@ class Movie {
       title: snapshot['title'] ?? '',
       posterPath: snapshot['poster_path'] ?? '',
       year: int.tryParse(snapshot['release_date'].substring(0, 4)) ?? 0,
+      id: snapshot.id,
     );
   }
 }
