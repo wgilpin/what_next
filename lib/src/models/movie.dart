@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 // https://github.com/kudpig/flutter_api_json_sample_at_movie/blob/main/lib/home/movie.dart
 
@@ -27,18 +28,21 @@ class Movie {
 
   factory Movie.fromMap(Map<String, dynamic> map) {
     int year = 0;
-    if (map.containsKey('release_date')) {
-      try {
-        year = map['release_date'].toString().length >= 4
-            ? int.parse(map['release_date'].toString().substring(0, 4))
-            : 0;
-      } on Exception {
-        print('Year Exception $map');
-        year = 0;
-      }
+    // movie & tv show have different terms for release date
+    var dateString = map.containsKey('release_date')
+        ? map['release_date']
+        : map.containsKey('first_air_date')
+            ? map['first_air_date']
+            : '';
+    // get the year from the date string
+    try {
+      year = dateString.length >= 4 ? int.parse(dateString.substring(0, 4)) : 0;
+    } on Exception {
+      debugPrint('Year Exception $map');
+      year = 0;
     }
     var res = Movie(
-      title: map['title'] ?? '',
+      title: map['title'] ?? map['name'] ?? 'Unnamed',
       posterPath: map['poster_path'] ?? '',
       year: year,
     );
