@@ -6,7 +6,7 @@ import 'package:what_next/src/services/tmdb_api.dart';
 import '../models/movie.dart';
 import 'movies_exception.dart';
 
-class MovieSearchController extends GetxController {
+class MovieSearchCtl extends GetxController {
   var searchResults = <Movie>[].obs;
 
   Future<void> search({required String text}) async {
@@ -29,5 +29,4 @@ class MovieSearchController extends GetxController {
       throw MoviesException.fromDioError(dioError);
     }
   }
-
 }

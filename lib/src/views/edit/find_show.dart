@@ -18,7 +18,7 @@ class FindShowForm extends StatefulWidget {
 class _FindShowFormState extends State<FindShowForm> {
   final _formKey = GlobalKey<FormState>();
   String searchText = '';
-  final searcher = Get.put(MovieSearchController());
+  final searcher = Get.put(MovieSearchCtl());
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _FindShowFormState extends State<FindShowForm> {
                     constraints: const BoxConstraints(maxWidth: 300),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: GetBuilder<MovieSearchController>(
+                      child: GetBuilder<MovieSearchCtl>(
                         builder: (controller) {
                           return ListView.builder(
                             itemCount: controller.searchResults.length,

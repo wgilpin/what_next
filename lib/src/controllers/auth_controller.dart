@@ -2,7 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-class AuthController extends GetxController {
+class AuthCtl extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Rxn<User> _firebaseUser = Rxn<User>();
   final verificationEmailSent = false.obs;
@@ -42,6 +42,8 @@ class AuthController extends GetxController {
   signOut() async {
     try {
       await _auth.signOut();
+      // Get.delete<MyReviewsCtl>();
+      // Get.delete<RecommendsCtl>();
     } catch (e) {
       Get.snackbar("Error signing out", e.toString(),
           snackPosition: SnackPosition.BOTTOM);
