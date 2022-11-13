@@ -2,6 +2,7 @@
 
 // Packages
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:what_next/src/controllers/movies_exception.dart';
 // Models
 import '../models/movie.dart';
@@ -30,13 +31,13 @@ class MovieService {
     try {
       final url = "https://api.themoviedb.org/3/search/"
           "$kind?api_key=$_apiKey&query=${Uri.encodeComponent(title)}";
-      print('url: $url');
+      debugPrint('url: $url');
       final response = await _dio.get(url);
       final results = List<Map<String, dynamic>>.from(response.data['results']);
       List<Movie> movies =
           results.map((movieData) => Movie.fromMap(movieData)).toList();
-      print('$kind ->');
-      print([for (Movie m in movies) m.title]);
+      debugPrint('$kind ->');
+      debugPrint([for (Movie m in movies) m.title].toString());
       return movies;
     } on DioError catch (dioError) {
       throw MoviesException.fromDioError(dioError);
