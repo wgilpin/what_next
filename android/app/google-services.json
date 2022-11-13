@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "718403489615",
+    "project_id": "what-next-317512",
+    "storage_bucket": "what-next-317512.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718403489615:android:8617427b04416072c13f3a",
+        "android_client_info": {
+          "package_name": "com.example.what_next"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718403489615-kk141p67dlur5n8c9m1e88pr3t2tbfqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjEBhFFFe0izxD_xxzlBOg9GR96HQe2Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718403489615-kk141p67dlur5n8c9m1e88pr3t2tbfqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
