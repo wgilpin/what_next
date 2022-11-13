@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/controllers/bindings/auth_binding.dart';
@@ -31,8 +32,10 @@ class MyApp extends StatelessWidget {
         title: 'What Next',
         initialBinding: AppBindings(),
         theme: makeTheme(),
+        scrollBehavior: MyCustomScrollBehavior(),
         home: Root());
   }
+
 
   ThemeData makeTheme() {
     return ThemeData(
@@ -53,4 +56,13 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
