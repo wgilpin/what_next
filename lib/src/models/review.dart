@@ -87,7 +87,7 @@ class Review extends Movie {
       posterPath: map['poster_path'] ?? '',
       year: map['year'] ?? 0,
       logo: map['logo'] ?? '',
-      rating: map['rating'],
+      rating: map['rating'].toDouble(),
       service: map['service'] ?? '',
       user: map['user'],
       when: map['when'],
