@@ -56,6 +56,7 @@ class Review extends Movie {
       'when': when,
       'comment': comment,
       'movie_id': movieId,
+      'year': year,
     };
   }
 
@@ -81,7 +82,7 @@ class Review extends Movie {
 
   static Review fromSnapshot(DocumentSnapshot snapshot) {
     var map = snapshot.data() as Map<String, dynamic>;
-    return Review(
+    var review = Review(
       title: map['title'] ?? '',
       posterPath: map['poster_path'] ?? '',
       year: map['year'] ?? 0,
@@ -91,7 +92,8 @@ class Review extends Movie {
       user: map['user'],
       when: map['when'],
       comment: map['comment'] ?? '',
-      movieId: snapshot.reference.parent.id,
+      movieId: map['movie_id'],
     );
+    return review;
   }
 }
