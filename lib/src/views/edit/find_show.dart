@@ -36,51 +36,54 @@ class _FindShowFormState extends State<FindShowForm> {
     }
 
     return Material(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 100, maxWidth: 400),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  autofocus: true,
-                  decoration: const InputDecoration(hintText: 'Movie name?'),
-                  onChanged: (text) {
-                    searchText = text;
-                  },
-                  onSubmitted: (_) => {doSave()},
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                SaveCancel(
-                    saveLbl: 'Search', onSave: doSave, cancelLbl: 'Cancel'),
-                Expanded(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 300),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GetBuilder<MovieSearchCtl>(
-                        builder: (controller) {
-                          return ListView.builder(
-                            itemCount: controller.searchResults.length,
-                            itemBuilder: (context, index) {
-                              Movie movie = controller.searchResults[index];
-                              Review review = Review.fromMovie(movie);
-                              return MovieSearchTile(
-                                movie: movie,
-                                onTap: () => Get.to(EditReview(review: review)),
-                              );
-                            },
-                          );
-                        },
+      child: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              constraints: const BoxConstraints(minWidth: 100, maxWidth: 400),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextField(
+                    autofocus: true,
+                    decoration: const InputDecoration(hintText: 'Movie name?'),
+                    onChanged: (text) {
+                      searchText = text;
+                    },
+                    onSubmitted: (_) => {doSave()},
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  SaveCancel(
+                      saveLbl: 'Search', onSave: doSave, cancelLbl: 'Cancel'),
+                  Expanded(
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GetBuilder<MovieSearchCtl>(
+                          builder: (controller) {
+                            return ListView.builder(
+                              itemCount: controller.searchResults.length,
+                              itemBuilder: (context, index) {
+                                Movie movie = controller.searchResults[index];
+                                Review review = Review.fromMovie(movie);
+                                return MovieSearchTile(
+                                  movie: movie,
+                                  onTap: () =>
+                                      Get.to(EditReview(review: review)),
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

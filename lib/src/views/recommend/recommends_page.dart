@@ -27,40 +27,42 @@ class RecommendsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('What Next'),
       ),
-      body: Obx(() {
-        labels.clear();
-        data.clear();
-        labels.add('My Reviews');
-        data.add(myReviewsController.reviews);
-        labels.add("Other People's");
-        data.add(recommendsController.reviews);
-        print('data: ${data.length}');
-        return data.isEmpty
-            ? const CircularProgressIndicator()
-            : ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          labels[index],
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        if (data[index].isEmpty)
-                          const Text('      No shows here'),
-                        if (data[index].isNotEmpty)
-                          FilmStrip(data: data[index]),
-                      ],
-                    ),
-                  );
-                });
-      }),
+      body: SafeArea(
+        child: Obx(() {
+          labels.clear();
+          data.clear();
+          labels.add('My Reviews');
+          data.add(myReviewsController.reviews);
+          labels.add("Other People's");
+          data.add(recommendsController.reviews);
+          print('data: ${data.length}');
+          return data.isEmpty
+              ? const CircularProgressIndicator()
+              : ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            labels[index],
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          if (data[index].isEmpty)
+                            const Text('      No shows here'),
+                          if (data[index].isNotEmpty)
+                            FilmStrip(data: data[index]),
+                        ],
+                      ),
+                    );
+                  });
+        }),
+      ),
       drawer: getDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
