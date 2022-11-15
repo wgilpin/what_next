@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
+import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/utils/root.dart';
 import 'package:what_next/src/views/login/register_page.dart';
 import 'package:what_next/src/views/recommend/recommends_page.dart';
@@ -37,17 +38,13 @@ class LoginPage extends GetWidget<AuthCtl> {
                     decoration: InputDecoration(hintText: 'Email'),
                     controller: emailController,
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  addVerticalSpace(40),
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Password'),
                     controller: passwordController,
                     obscureText: true,
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  addVerticalSpace(40),
                   ElevatedButton(
                     onPressed: doLogin,
                     child: Text(
@@ -55,9 +52,7 @@ class LoginPage extends GetWidget<AuthCtl> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  addVerticalSpace(40),
                   TextButton(
                     onPressed: () {
                       Get.to(RegisterPage());

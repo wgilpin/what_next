@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/models/user_profile.dart';
 import 'package:what_next/src/theme.dart';
+import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/drawer.dart';
 
 class FriendsPage extends StatelessWidget {
@@ -48,9 +49,7 @@ class FriendsPage extends StatelessWidget {
                         ),
                       )
                     : Text('')),
-                const SizedBox(
-                  height: 20,
-                ),
+                addVerticalSpace(20),
                 Text('Friends', style: Theme.of(context).textTheme.headline6),
                 if (friends.isEmpty)
                   const Padding(

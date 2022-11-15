@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
+import 'package:what_next/src/utils/layout.dart';
 
 class RegisterPage extends GetWidget<AuthCtl> {
   final TextEditingController emailController = TextEditingController();
@@ -25,17 +26,13 @@ class RegisterPage extends GetWidget<AuthCtl> {
                     decoration: InputDecoration(hintText: 'Email'),
                     controller: emailController,
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  addVerticalSpace(40),
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Password'),
                     controller: passwordController,
                     obscureText: true,
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  addVerticalSpace(40),
                   ElevatedButton(
                     onPressed: () {
                       controller.createUser(

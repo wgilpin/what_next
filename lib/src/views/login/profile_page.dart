@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
+import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/login/login_page.dart';
 
 class ProfilePage extends GetWidget<AuthCtl> {
@@ -26,12 +27,12 @@ class ProfilePage extends GetWidget<AuthCtl> {
               'NAME: ${controller.user?.displayName}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
-            SizedBox(height: 16.0),
+            addVerticalSpace(16),
             Text(
               'EMAIL: ${controller.user?.email}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
-            SizedBox(height: 16.0),
+            addVerticalSpace(16),
             controller.user!.emailVerified
                 ? Text(
                     'Email verified',
@@ -51,7 +52,7 @@ class ProfilePage extends GetWidget<AuthCtl> {
                       ),
                     ],
                   ),
-            SizedBox(height: 16.0),
+            addVerticalSpace(16),
             _isSendingVerification.value
                 ? CircularProgressIndicator()
                 : Row(
@@ -64,8 +65,7 @@ class ProfilePage extends GetWidget<AuthCtl> {
                         },
                         child: Text('Verify email'),
                       ),
-                      SizedBox(width: 8.0),
-                      IconButton(
+addVerticalSpace(8),                      IconButton(
                         icon: Icon(Icons.refresh),
                         onPressed: () async {
                           await controller.refreshUser();
@@ -73,7 +73,7 @@ class ProfilePage extends GetWidget<AuthCtl> {
                       ),
                     ],
                   ),
-            SizedBox(height: 16.0),
+            addVerticalSpace(16),
             _isSigningOut.value
                 ? CircularProgressIndicator()
                 : ElevatedButton(

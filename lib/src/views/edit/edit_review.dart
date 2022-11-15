@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/firestore_db.dart';
+import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/edit/save_cancel.dart';
 import 'package:what_next/src/views/edit/star_rating.dart';
 import 'package:what_next/src/views/my_movies/my_movies_page.dart';
@@ -30,14 +31,14 @@ class EditReview extends StatelessWidget {
             constraints: const BoxConstraints(minWidth: 100, maxWidth: 400),
             child: Column(
               children: [
-                const SizedBox(height: 30),
+                addVerticalSpace(30),
                 Image.network(
                   review.fullImageUrl,
                   height: 200,
                 ),
-                const SizedBox(height: 10),
+                addVerticalSpace(10),
                 Text(review.title),
-                const SizedBox(height: 10),
+                addVerticalSpace(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -49,13 +50,13 @@ class EditReview extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                addVerticalSpace(20),
                 TextFormField(
                   controller: _commentController,
                   decoration:
                       const InputDecoration(hintText: 'Add your comment'),
                 ),
-                const SizedBox(height: 20),
+                addVerticalSpace(20),
                 SaveCancel(
                   saveLbl: 'Save',
                   onSave: _doSave,

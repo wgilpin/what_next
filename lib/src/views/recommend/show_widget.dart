@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/edit/star_rating.dart';
 import 'package:what_next/src/models/review.dart';
 
@@ -23,7 +24,7 @@ class ShowWidget extends StatelessWidget {
                 review.fullImageUrl,
                 height: 200,
               ),
-              const SizedBox(height: 10),
+              addVerticalSpace(10),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -31,7 +32,7 @@ class ShowWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(height: 10),
+              addVerticalSpace(10),
               Center(
                 child: StarRating(
                   rating: review.rating,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:what_next/src/controllers/my_reviews_controller.dart';
 import 'package:what_next/src/controllers/recommends_controller.dart';
 import 'package:what_next/src/models/review.dart';
+import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
 import 'package:what_next/src/views/recommend/film_strip.dart';
@@ -50,9 +51,7 @@ class RecommendsPage extends StatelessWidget {
                             labels[index],
                             textAlign: TextAlign.left,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          addVerticalSpace(10),
                           if (data[index].isEmpty)
                             const Text('      No shows here'),
                           if (data[index].isNotEmpty)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/utils/layout.dart';
 
 class SaveCancel extends StatelessWidget {
   const SaveCancel(
@@ -23,9 +24,7 @@ class SaveCancel extends StatelessWidget {
           onPressed: onSave,
           child: Text(saveLbl),
         ),
-        const SizedBox(
-          width: 20,
-        ),
+        addVerticalSpace(20),
         ElevatedButton(
           onPressed: onCancel ?? () => Get.back(),
           child: Text(cancelLbl),
