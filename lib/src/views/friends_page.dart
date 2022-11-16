@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/controllers/users_controller.dart';
 import 'package:what_next/src/models/user_profile.dart';
 import 'package:what_next/src/theme.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/drawer.dart';
 
 class FriendsPage extends StatelessWidget {
+  final UserProfilesCtl friendsCtl = Get.put(UserProfilesCtl());
+
   FriendsPage({super.key});
-  final emailAddress = ''.obs;
-  final emailController = TextEditingController();
-  RxList<UserProfile> friends = RxList<UserProfile>([]);
+  final searchName = ''.obs;
+  final RxList<UserProfile> searchResults = RxList<UserProfile>([]);
+  final RxList<UserProfile> friendsList = RxList<UserProfile>([]);
 
   @override
   Widget build(BuildContext context) {
@@ -26,49 +27,84 @@ class FriendsPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                TextFormField(
-                  onChanged: (value) => emailAddress.value = value,
-                  controller: emailController,
+                TextField(
+                  onChanged: ((text) => searchName.value = text),
+                  onSubmitted: (_) => {doSearch()},
+                  autofocus: true,
                   decoration: const InputDecoration(
                     icon: Icon(Icons.search),
-                    hintText: "Your friend's email address",
+                    hintText: "Your friend's name",
                     labelText: 'Find a friend',
                   ),
-                  validator: (String? value) {
-                    return (value == null || GetUtils.isEmail(value))
-                        ? 'Please enter a valid email address'
-                        : null;
-                  },
                 ),
-                Obx(() => GetUtils.isEmail(emailAddress.value)
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Invite'),
-                        ),
-                      )
-                    : Text('')),
-                addVerticalSpace(20),
-                Text('Friends', style: Theme.of(context).textTheme.headline6),
-                if (friends.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Text(
-                        'You have no friends yet. Type an email address to invite them'),
-                  )
-                else
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: friends.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: const Icon(Icons.person),
-                        title: Text(friends[index].displayName),
-                        subtitle: Text(friends[index].lastActive.toString()),
-                      );
-                    },
-                  ))
+                Obx(() {
+                  friendsList.clear();
+                  friendsList.addAll(friendsCtl.friends);
+                  debugPrint(
+                      'in friends page. Friends count: ${friendsList.length}');
+                  return SizedBox(
+                    height: 300,
+                    child: Column(
+                      children: [
+                        if (searchName.value.length >= 3)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton.icon(
+                              onPressed: doSearch,
+                              icon: const Icon(Icons.search),
+                              label: const Text('Search'),
+                            ),
+                          )
+                        else
+                          const Text(''),
+                        if (searchResults.isNotEmpty)
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: searchResults.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                      leading: const Icon(Icons.person),
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(toTitleCase(searchResults[index]
+                                              .displayName)),
+                                          TextButton(
+                                              child: const Text('add friend'),
+                                              onPressed: () => addFriend(
+                                                  searchResults[index]))
+                                        ],
+                                      ));
+                                }),
+                          )
+                        else
+                          const Text(''),
+                        addVerticalSpace(20),
+                        Text('Friends',
+                            style: Theme.of(context).textTheme.headline6),
+                        if (friendsCtl.friends.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.only(top: 20.0),
+                            child: Text(
+                                'You have no friends yet. Type an email address to invite them'),
+                          )
+                        else
+                          ListView.builder(
+                            itemCount: friendsCtl.friends.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: const Icon(Icons.person),
+                                title:
+                                    Text(friendsCtl.friends[index].displayName),
+                              );
+                            },
+                          )
+                      ],
+                    ),
+                  );
+                }),
               ],
             ),
           ),
@@ -76,5 +112,23 @@ class FriendsPage extends StatelessWidget {
         drawer: getDrawer(),
       ),
     );
+  }
+
+  void doSearch() {
+    searchResults.clear();
+    UserProfilesCtl().findUser(searchName.value).then((value) {
+      searchResults.addAll(value);
+    });
+  }
+
+  String toTitleCase(String str) {
+    return str
+        .split(' ')
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join(' ');
+  }
+
+  addFriend(UserProfile friend) async {
+    await UserProfilesCtl().addFriend(friend);
   }
 }

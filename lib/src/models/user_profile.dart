@@ -7,14 +7,14 @@ import 'package:flutter/foundation.dart';
 class UserProfile {
   String displayName;
   bool active;
-  DateTime lastActive;
+  DateTime? lastActive;
   String id;
 
   UserProfile({
     required this.displayName,
-    required this.active,
-    required this.lastActive,
     required this.id,
+    this.active = true,
+    this.lastActive,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,7 +37,8 @@ class UserProfile {
 
   String toJson() => json.encode(toMap());
 
-  factory UserProfile.fromJson(String source) => UserProfile.fromMap(json.decode(source));
+  factory UserProfile.fromJson(String source) =>
+      UserProfile.fromMap(json.decode(source));
 
   static UserProfile fromSnapshot(DocumentSnapshot snapshot) {
     var map = snapshot.data() as Map<String, dynamic>;
