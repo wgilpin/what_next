@@ -5,13 +5,14 @@ import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/models/movie.dart';
 import 'package:what_next/src/models/review.dart';
 import "package:collection/collection.dart";
+import 'package:what_next/src/models/user_profile.dart';
 
 class FirestoreDB {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Stream<List<Review>> reviewsForUserStream(String uid) {
     debugPrint('in reviewsForUserStream');
-    return _firestore
+    return firestore
         .collectionGroup('reviews')
         .where('user', isEqualTo: uid)
         .snapshots()
@@ -29,7 +30,7 @@ class FirestoreDB {
 
   Stream<List<Review>> recommendsStream(String uid) {
     debugPrint('in recommendsStream');
-    return _firestore
+    return firestore
         .collectionGroup('reviews')
         .orderBy('when', descending: true)
         .snapshots()
@@ -40,15 +41,15 @@ class FirestoreDB {
         rawReviews.add(reviewModel);
       }
       var reviews = processReviews(rawReviews: rawReviews, user: uid);
-      debugPrint('recommends stream:${reviews.length}');
+      debugPrint('recommends stream: ${reviews.length}');
       return reviews;
     });
   }
 
   Future<void> addMovie(Movie movie) async {
-    var movieSnap = await _firestore.collection('movies').doc(movie.id).get();
+    var movieSnap = await firestore.collection('movies').doc(movie.id).get();
     if (!movieSnap.exists) {
-      _firestore.collection('movies').doc(movie.id).set({
+      firestore.collection('movies').doc(movie.id).set({
         'title': movie.title,
         'posterPath': movie.posterPath,
       });
@@ -62,7 +63,7 @@ class FirestoreDB {
     }
     review.user = authController.user!.uid;
     await addMovie(review);
-    await _firestore
+    await firestore
         .collection('movies')
         .doc(review.movieId)
         .collection('reviews')
@@ -90,4 +91,6 @@ class FirestoreDB {
     }
     return results;
   }
+
+  
 }
