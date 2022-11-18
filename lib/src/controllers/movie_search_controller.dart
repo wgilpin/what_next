@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/services/tmdb_api.dart';
 
 import '../models/movie.dart';

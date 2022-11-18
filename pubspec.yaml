@@ -38,6 +38,7 @@ dependencies:
   tmdb_api: ^2.1.4
   dio: ^4.0.6
   get: ^4.6.5
+  material_floating_search_bar: ^0.3.7
 
 dev_dependencies:
   flutter_lints: ^2.0.0

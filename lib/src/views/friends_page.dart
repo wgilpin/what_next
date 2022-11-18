@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:what_next/src/controllers/users_controller.dart';
 import 'package:what_next/src/models/user_profile.dart';
 import 'package:what_next/src/theme.dart';
@@ -19,105 +20,124 @@ class FriendsPage extends StatelessWidget {
     return Theme(
       data: makeTheme(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('What Next'),
-        ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+          child: Obx(() {
+            friendsList.clear();
+            friendsList.addAll(friendsCtl.friends);
+            debugPrint('in friends page. Friends count: ${friendsList.length}');
+            return Stack(
               children: [
-                TextField(
-                  onChanged: ((text) => searchName.value = text),
-                  onSubmitted: (_) => {doSearch()},
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.search),
-                    hintText: "Your friend's name",
-                    labelText: 'Find a friend',
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      addVerticalSpace(50),
+                      Text('Friends',
+                          style: Theme.of(context).textTheme.headline6),
+                      if (friendsCtl.friends.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20.0),
+                          child: Text(
+                              'You have no friends yet. Type an email address to invite them'),
+                        )
+                      else
+                        ListView.builder(
+                          itemCount: friendsCtl.friends.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: const Icon(Icons.person),
+                              title: Text(toTitleCase(
+                                  friendsCtl.friends[index].displayName)),
+                            );
+                          },
+                        )
+                    ],
                   ),
                 ),
-                Obx(() {
-                  friendsList.clear();
-                  friendsList.addAll(friendsCtl.friends);
-                  debugPrint(
-                      'in friends page. Friends count: ${friendsList.length}');
-                  return SizedBox(
-                    height: 300,
-                    child: Column(
-                      children: [
-                        if (searchName.value.length >= 3)
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton.icon(
-                              onPressed: doSearch,
-                              icon: const Icon(Icons.search),
-                              label: const Text('Search'),
-                            ),
-                          )
-                        else
-                          const Text(''),
-                        if (searchResults.isNotEmpty)
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: searchResults.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                      leading: const Icon(Icons.person),
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(toTitleCase(searchResults[index]
-                                              .displayName)),
-                                          TextButton(
-                                              child: const Text('add friend'),
-                                              onPressed: () => addFriend(
-                                                  searchResults[index]))
-                                        ],
-                                      ));
-                                }),
-                          )
-                        else
-                          const Text(''),
-                        addVerticalSpace(20),
-                        Text('Friends',
-                            style: Theme.of(context).textTheme.headline6),
-                        if (friendsCtl.friends.isEmpty)
-                          const Padding(
-                            padding: EdgeInsets.only(top: 20.0),
-                            child: Text(
-                                'You have no friends yet. Type an email address to invite them'),
-                          )
-                        else
-                          ListView.builder(
-                            itemCount: friendsCtl.friends.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: const Icon(Icons.person),
-                                title:
-                                    Text(friendsCtl.friends[index].displayName),
-                              );
-                            },
-                          )
-                      ],
-                    ),
-                  );
-                }),
+                buildFloatingSearchBar(context),
               ],
-            ),
-          ),
+            );
+          }),
         ),
         drawer: getDrawer(),
       ),
     );
   }
 
-  void doSearch() {
+  Widget buildFloatingSearchBar(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
+    return FloatingSearchBar(
+      hint: 'Search for friends',
+      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+      transitionDuration: const Duration(milliseconds: 800),
+      transitionCurve: Curves.easeInOut,
+      physics: const BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      openAxisAlignment: 0.0,
+      width: isPortrait ? 600 : 500,
+      debounceDelay: const Duration(milliseconds: 500),
+      onQueryChanged: (query) {
+        doSearch(query);
+      },
+      // Specify a custom transition to be used for
+      // animating between opened and closed stated.
+      transition: CircularFloatingSearchBarTransition(),
+      actions: [
+        FloatingSearchBarAction(
+          showIfOpened: false,
+          child: CircularButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ),
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
+      ],
+      builder: (context, transition) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            elevation: 4.0,
+            child: Obx(() => Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: searchResults.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(toTitleCase(
+                                    searchResults[index].displayName)),
+                                TextButton(
+                                    child: const Text('add friend'),
+                                    onPressed: () =>
+                                        addFriend(searchResults[index]))
+                              ],
+                            ));
+                      }),
+                )),
+          ),
+        );
+      },
+    );
+  }
+
+  void doSearch(String name) {
     searchResults.clear();
-    UserProfilesCtl().findUser(searchName.value).then((value) {
-      searchResults.addAll(value);
+    UserProfilesCtl().findUser(name).then((profilesFound) {
+      // add to searchResults if not already in friendsList
+      for (var profileFound in profilesFound) {
+        if (!friendsList
+            .any((currentFriend) => currentFriend.id == profileFound.id)) {
+          searchResults.add(profileFound);
+        }
+      }
     });
   }
 
