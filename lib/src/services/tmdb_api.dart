@@ -3,61 +3,47 @@
 // Packages
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:what_next/src/controllers/movies_exception.dart';
+import 'package:what_next/src/controllers/show_exception.dart';
 // Models
-import '../models/movie.dart';
+import '../models/show.dart';
 
 typedef GenreMap = Map<int, String>;
 
-class MovieService {
+class TmdbService {
   final Dio _dio = Dio();
 
   static const String _apiKey = 'f677412008f378e0d65efdb2e542aa1f';
 
-  // searches for the post popular movies
-  Future<List<Movie>> getMovies() async {
-    try {
-      final response = await _dio
-          .get("https://api.themoviedb.org/3/movie/popular?api_key=$_apiKey");
-      final results = List<Map<String, dynamic>>.from(response.data['results']);
-      List<Movie> movies =
-          results.map((movieData) => Movie.fromMap(movieData)).toList();
-      return movies;
-    } on DioError catch (dioError) {
-      throw MoviesException.fromDioError(dioError);
-    }
-  }
-
   // searchs for [kind] 'movies' or 'shows' by title or part-title
-  Future<List<Movie>> _doSearch(String title, String kind) async {
+  Future<List<Show>> _doSearch(String title, String kind) async {
     try {
       final url = "https://api.themoviedb.org/3/search/"
           "$kind?api_key=$_apiKey&query=${Uri.encodeComponent(title)}";
       debugPrint('url: $url');
       final response = await _dio.get(url);
       final results = List<Map<String, dynamic>>.from(response.data['results']);
-      List<Movie> movies =
-          results.map((movieData) => Movie.fromMap(movieData)).toList();
+      List<Show> shows =
+          results.map((movieData) => Show.fromMap(movieData)).toList();
       debugPrint('$kind ->');
-      debugPrint([for (Movie m in movies) m.title].toString());
-      return movies;
+      debugPrint([for (Show m in shows) m.title].toString());
+      return shows;
     } on DioError catch (dioError) {
-      throw MoviesException.fromDioError(dioError);
+      throw ShowsException.fromDioError(dioError);
     }
   }
 
-  Future<List<Movie>> search({required String text}) async {
-    List<Movie> movies = [];
-    List<Movie> shows = [];
+  Future<List<Show>> search({required String text}) async {
+    List<Show> movies = [];
+    List<Show> tvShows = [];
 
     await Future.wait<void>([
       _doSearch(text, 'movie').then((result) => movies = result),
-      _doSearch(text, 'tv').then((result) => shows = result),
+      _doSearch(text, 'tv').then((result) => tvShows = result),
     ]);
-    return [...movies, ...shows];
+    return [...movies, ...tvShows];
   }
 
-  // searches for the post popular movies
+  // Get the list of genres for movies and tv shows
   Future<GenreMap> getGenres() async {
     try {
       late GenreMap genres = {};
@@ -66,8 +52,6 @@ class MovieService {
             .get(
                 "https://api.themoviedb.org/3/genre/movie/list?api_key=$_apiKey")
             .then((response) {
-          print('Data: $response.data');
-          print('Genres: $response.data.genres');
           for (var map in response.data['genres']) {
             genres[map['id']] = map['name'];
           }
@@ -82,7 +66,7 @@ class MovieService {
       ]);
       return genres;
     } on DioError catch (dioError) {
-      throw MoviesException.fromDioError(dioError);
+      throw ShowsException.fromDioError(dioError);
     }
   }
 }

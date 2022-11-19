@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
-import 'package:what_next/src/models/movie.dart';
+import 'package:what_next/src/models/show.dart';
 import 'package:what_next/src/models/review.dart';
 import "package:collection/collection.dart";
 
@@ -27,8 +27,7 @@ class FirestoreDB {
     });
   }
 
-  Stream<List<Review>> recommendsStream(String uid) {
-    debugPrint('in recommendsStream');
+  Stream<List<Review>> reviewsStream(String uid) {
     return firestore
         .collectionGroup('reviews')
         .orderBy('when', descending: true)
@@ -40,14 +39,13 @@ class FirestoreDB {
         rawReviews.add(reviewModel);
       }
       var reviews = processReviews(rawReviews: rawReviews, user: uid);
-      debugPrint('recommends stream: ${reviews.length}');
       return reviews;
     });
   }
 
-  Future<void> addMovie(Movie movie) async {
-    var movieSnap = await firestore.collection('movies').doc(movie.id).get();
-    if (!movieSnap.exists) {
+  Future<void> addMovie(Show movie) async {
+    var showsSnap = await firestore.collection('movies').doc(movie.id).get();
+    if (!showsSnap.exists) {
       firestore.collection('movies').doc(movie.id).set({
         'title': movie.title,
         'posterPath': movie.posterPath,

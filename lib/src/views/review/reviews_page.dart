@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/my_reviews_controller.dart';
-import 'package:what_next/src/controllers/recommends_controller.dart';
+import 'package:what_next/src/controllers/reviews_controller.dart';
 import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
-import 'package:what_next/src/views/recommend/film_strip.dart';
+import 'package:what_next/src/views/review/film_strip.dart';
 
-class RecommendsPage extends StatelessWidget {
+class ReviewsPage extends StatelessWidget {
   final MyReviewsCtl myReviewsController = Get.put(MyReviewsCtl());
-  final RecommendsCtl recommendsController = Get.put(RecommendsCtl());
+  final ReviewsCtl reviewsController = Get.put(ReviewsCtl());
 
-  RecommendsPage({super.key});
+  ReviewsPage({super.key});
 
   final RxList<List<Review>> data = RxList<List<Review>>([]);
   final RxList<String> labels = RxList<String>([]);
@@ -22,7 +22,7 @@ class RecommendsPage extends StatelessWidget {
     labels.add('My Reviews');
     data.add(myReviewsController.reviews);
     labels.add("Other People's");
-    data.add(recommendsController.reviews);
+    data.add(reviewsController.reviews);
     data.refresh();
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +35,7 @@ class RecommendsPage extends StatelessWidget {
           labels.add('My Reviews');
           data.add(myReviewsController.reviews);
           labels.add("Other People's");
-          data.add(recommendsController.reviews);
+          data.add(reviewsController.reviews);
           print('data: ${data.length}');
           return data.isEmpty
               ? const CircularProgressIndicator()

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../models/movie.dart';
+import '../../models/show.dart';
 
-class MovieSearchTile extends StatelessWidget {
-  const MovieSearchTile({super.key, required this.movie, required this.onTap});
+class ShowSearchTile extends StatelessWidget {
+  const ShowSearchTile({super.key, required this.movie, required this.onTap});
 
-  final Movie movie;
+  final Show movie;
   final void Function() onTap;
 
   @override

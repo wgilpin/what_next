@@ -7,7 +7,7 @@ import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/utils/root.dart';
 import 'package:what_next/src/views/login/register_page.dart';
-import 'package:what_next/src/views/recommend/recommends_page.dart';
+import 'package:what_next/src/views/review/reviews_page.dart';
 
 class LoginPage extends GetWidget<AuthCtl> {
   final TextEditingController emailController = TextEditingController();
@@ -16,7 +16,7 @@ class LoginPage extends GetWidget<AuthCtl> {
   Future<void> doLogin() async {
     await controller.login(emailController.text, passwordController.text);
     if (controller.user != null) {
-      Get.offAll(RecommendsPage());
+      Get.offAll(ReviewsPage());
     } else {
       Get.offAll(LoginPage());
     }

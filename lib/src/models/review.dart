@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:what_next/src/models/movie.dart';
+import 'package:what_next/src/models/show.dart';
 
-class Review extends Movie {
+class Review extends Show {
   String logo = '';
   double rating = 0.0;
   String service = '';
@@ -32,7 +32,7 @@ class Review extends Movie {
             id: movieId,
             genreIds: genreIds);
 
-  Review.fromMovie(Movie movie)
+  Review.fromMovie(Show movie)
       : super(
             title: movie.title,
             posterPath: movie.posterPath,

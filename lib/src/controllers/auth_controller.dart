@@ -42,8 +42,6 @@ class AuthCtl extends GetxController {
   signOut() async {
     try {
       await _auth.signOut();
-      // Get.delete<MyReviewsCtl>();
-      // Get.delete<RecommendsCtl>();
     } catch (e) {
       Get.snackbar("Error signing out", e.toString(),
           snackPosition: SnackPosition.BOTTOM);

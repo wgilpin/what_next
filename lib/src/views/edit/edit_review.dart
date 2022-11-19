@@ -4,7 +4,7 @@ import 'package:what_next/src/controllers/firestore_db.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/edit/save_cancel.dart';
 import 'package:what_next/src/views/edit/star_rating.dart';
-import 'package:what_next/src/views/my_movies/my_movies_page.dart';
+import 'package:what_next/src/views/my_reviews/my_reviews_page.dart';
 
 import '../../models/review.dart';
 
@@ -19,7 +19,7 @@ class EditReview extends StatelessWidget {
     await FirestoreDB().addReview(review);
     _commentController.clear();
     Get.snackbar("Saved", review.title, snackPosition: SnackPosition.BOTTOM);
-    Get.offAll(const MyMoviesPage());
+    Get.offAll(const MyReviewsPage());
   }
 
   @override

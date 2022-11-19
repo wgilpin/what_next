@@ -2,31 +2,31 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/services/tmdb_api.dart';
 
-import '../models/movie.dart';
-import 'movies_exception.dart';
+import '../models/show.dart';
+import 'show_exception.dart';
 
-class MovieSearchCtl extends GetxController {
-  var searchResults = <Movie>[].obs;
+class ShowSearchCtl extends GetxController {
+  var searchResults = <Show>[].obs;
   GenreMap genres = {};
 
   Future<void> search({required String text}) async {
     try {
-      late List<Movie> interimResults = [];
+      late List<Show> interimResults = [];
 
       // get the genre list if not already loaded, and the search results
       await Future.wait([
         if (genres.isEmpty)
-          MovieService().getGenres().then((newGenres) => genres = newGenres),
-        MovieService()
+          TmdbService().getGenres().then((newGenres) => genres = newGenres),
+        TmdbService()
             .search(text: text)
             .then((result) => interimResults = result),
       ]);
 
       // order results by exact match then by year
-      List<Movie> exactMatches = interimResults
+      List<Show> exactMatches = interimResults
           .where((m) => m.title.toLowerCase() == text.toLowerCase())
           .toList();
-      List<Movie> otherMatches = interimResults
+      List<Show> otherMatches = interimResults
           .where((m) => m.title.toLowerCase() != text.toLowerCase())
           .toList();
       otherMatches.sort((a, b) => b.year.compareTo(a.year));
@@ -35,7 +35,7 @@ class MovieSearchCtl extends GetxController {
       searchResults.value = exactMatches + otherMatches;
       update();
     } on DioError catch (dioError) {
-      throw MoviesException.fromDioError(dioError);
+      throw ShowsException.fromDioError(dioError);
     }
   }
 }

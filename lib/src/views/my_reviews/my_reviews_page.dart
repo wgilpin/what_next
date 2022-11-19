@@ -5,14 +5,13 @@ import 'package:get/get.dart';
 import 'package:what_next/src/controllers/my_reviews_controller.dart';
 import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
-import 'package:what_next/src/views/recommend/show_widget.dart';
+import 'package:what_next/src/views/review/show_widget.dart';
 
-class MyMoviesPage extends GetWidget<MyReviewsCtl> {
-  const MyMoviesPage({super.key});
+class MyReviewsPage extends GetWidget<MyReviewsCtl> {
+  const MyReviewsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print('Building myMoviesPage');
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Shows'),
@@ -20,12 +19,10 @@ class MyMoviesPage extends GetWidget<MyReviewsCtl> {
       drawer: getDrawer(),
       body: Obx(() {
         if (controller.reviews.isEmpty) {
-          print('Reviews list empty');
           return const Center(
             child: Text('No shows added yet'),
           );
         } else {
-          print('Reviews list full');
           return Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 200),

@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/views/friends_page.dart';
 import 'package:what_next/src/views/login/login_page.dart';
-import 'package:what_next/src/views/recommend/recommends_page.dart';
+import 'package:what_next/src/views/review/reviews_page.dart';
 
-import 'my_movies/my_movies_page.dart';
+import 'my_reviews/my_reviews_page.dart';
 
 Drawer getDrawer() {
   var controller = Get.find<AuthCtl>();
@@ -22,17 +22,17 @@ Drawer getDrawer() {
               child: Text(controller.user?.displayName ?? 'User'),
             ),
             ListTile(
-              title: const Text('Recomended'),
+              title: const Text('Reviews'),
               leading: const Icon(Icons.recommend),
               onTap: () {
-                Get.to(RecommendsPage());
+                Get.to(ReviewsPage());
               },
             ),
             ListTile(
               title: const Text('My Shows'),
               leading: const Icon(Icons.movie),
               onTap: () {
-                Get.to(const MyMoviesPage());
+                Get.to(const MyReviewsPage());
               },
             ),
             ListTile(
