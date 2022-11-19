@@ -105,7 +105,9 @@ class ReviewsPage extends StatelessWidget {
                   onPressed: () => doFilter(-1),
                   child: const Text(
                     'Clear Filter',
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.underline),
                   )),
             GridView.builder(
                 shrinkWrap: true,
@@ -113,11 +115,17 @@ class ReviewsPage extends StatelessWidget {
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 150, childAspectRatio: 4),
                 itemBuilder: (context, index) {
+                  var style =
+                      genreIdFilter.value == genreController.genreIdAt(index)
+                          ? const TextStyle(
+                              color: Colors.white,
+                              backgroundColor: Colors.black26)
+                          : const TextStyle(color: Colors.blue);
                   return TextButton(
                       onPressed: () => doFilter(index),
                       child: Text(
                         genreController.genreNameAt(index),
-                        style: const TextStyle(color: Colors.blue),
+                        style: style,
                       ));
                 }),
           ])),
