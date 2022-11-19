@@ -65,6 +65,7 @@ class Review extends Show {
       'comment': comment,
       'movie_id': movieId,
       'year': year,
+      'genre_ids': genreIds,
     };
   }
 
@@ -102,7 +103,8 @@ class Review extends Show {
       when: map['when'],
       comment: map['comment'] ?? '',
       movieId: map['movie_id'],
-      genreIds: map['genre_ids'] ?? [],
+      genreIds:
+          map['genre_ids'] != null ? List<int>.from(map['genre_ids']) : [],
     );
     return review;
   }

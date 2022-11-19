@@ -3,9 +3,10 @@ import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/views/review/show_widget.dart';
 
 class FilmStrip extends StatelessWidget {
-  const FilmStrip({super.key, required this.data});
+  const FilmStrip({super.key, required this.data, required this.genre});
 
   final List<Review> data;
+  final int genre;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +19,13 @@ class FilmStrip extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
-                return ShowWidget(
-                  review: data[index],
-                );
+                if (genre < 0 || data[index].genreIds.contains(genre)) {
+                  return ShowWidget(
+                    review: data[index],
+                  );
+                } else {
+                  return const SizedBox();
+                }
               },
             ),
           ),
