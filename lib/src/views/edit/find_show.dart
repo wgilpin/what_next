@@ -32,7 +32,7 @@ class _FindShowFormState extends State<FindShowForm> {
           const SnackBar(content: Text('Processing Data')),
         );
         await searcher.search(text: searchText);
-        print([for (var r in searcher.searchResults) r.title]);
+        debugPrint([for (var r in searcher.searchResults) r.title].toString());
       }
     }
 

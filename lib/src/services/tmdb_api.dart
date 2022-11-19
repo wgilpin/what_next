@@ -7,6 +7,8 @@ import 'package:what_next/src/controllers/movies_exception.dart';
 // Models
 import '../models/movie.dart';
 
+typedef GenreMap = Map<int, String>;
+
 class MovieService {
   final Dio _dio = Dio();
 
@@ -53,5 +55,34 @@ class MovieService {
       _doSearch(text, 'tv').then((result) => shows = result),
     ]);
     return [...movies, ...shows];
+  }
+
+  // searches for the post popular movies
+  Future<GenreMap> getGenres() async {
+    try {
+      late GenreMap genres = {};
+      await Future.wait([
+        _dio
+            .get(
+                "https://api.themoviedb.org/3/genre/movie/list?api_key=$_apiKey")
+            .then((response) {
+          print('Data: $response.data');
+          print('Genres: $response.data.genres');
+          for (var map in response.data['genres']) {
+            genres[map['id']] = map['name'];
+          }
+        }),
+        _dio
+            .get("https://api.themoviedb.org/3/genre/tv/list?api_key=$_apiKey")
+            .then((response) {
+          for (var map in response.data['genres']) {
+            genres[map['id']] = map['name'];
+          }
+        }),
+      ]);
+      return genres;
+    } on DioError catch (dioError) {
+      throw MoviesException.fromDioError(dioError);
+    }
   }
 }

@@ -7,10 +7,20 @@ import 'movies_exception.dart';
 
 class MovieSearchCtl extends GetxController {
   var searchResults = <Movie>[].obs;
+  GenreMap genres = {};
 
   Future<void> search({required String text}) async {
     try {
-      final interimResults = await MovieService().search(text: text);
+      late List<Movie> interimResults = [];
+
+      // get the genre list if not already loaded, and the search results
+      await Future.wait([
+        if (genres.isEmpty)
+          MovieService().getGenres().then((newGenres) => genres = newGenres),
+        MovieService()
+            .search(text: text)
+            .then((result) => interimResults = result),
+      ]);
 
       // order results by exact match then by year
       List<Movie> exactMatches = interimResults

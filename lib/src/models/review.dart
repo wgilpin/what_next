@@ -17,6 +17,7 @@ class Review extends Movie {
     required String title,
     required String posterPath,
     required int year,
+    required List<int> genreIds,
     required this.comment,
     required this.logo,
     required this.rating,
@@ -24,14 +25,20 @@ class Review extends Movie {
     required this.user,
     required this.when,
     required this.movieId,
-  }) : super(title: title, posterPath: posterPath, year: year, id: movieId);
+  }) : super(
+            title: title,
+            posterPath: posterPath,
+            year: year,
+            id: movieId,
+            genreIds: genreIds);
 
   Review.fromMovie(Movie movie)
       : super(
             title: movie.title,
             posterPath: movie.posterPath,
             year: movie.year,
-            id: movie.id) {
+            id: movie.id,
+            genreIds: movie.genreIds) {
     title = movie.title;
     posterPath = movie.posterPath;
     year = movie.year;
@@ -42,6 +49,7 @@ class Review extends Movie {
     user = FirebaseAuth.instance.currentUser?.uid ?? '';
     when = Timestamp.now();
     movieId = id;
+    genreIds = genreIds;
   }
 
   @override
@@ -72,6 +80,7 @@ class Review extends Movie {
       year: map['year'],
       comment: map['comment'] ?? '',
       movieId: map['movie_id'] ?? '',
+      genreIds: map['genre_ids'] ?? [],
     );
   }
 
@@ -93,6 +102,7 @@ class Review extends Movie {
       when: map['when'],
       comment: map['comment'] ?? '',
       movieId: map['movie_id'],
+      genreIds: map['genre_ids'] ?? [],
     );
     return review;
   }

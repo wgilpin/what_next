@@ -5,7 +5,6 @@ import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/models/movie.dart';
 import 'package:what_next/src/models/review.dart';
 import "package:collection/collection.dart";
-import 'package:what_next/src/models/user_profile.dart';
 
 class FirestoreDB {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -52,6 +51,7 @@ class FirestoreDB {
       firestore.collection('movies').doc(movie.id).set({
         'title': movie.title,
         'posterPath': movie.posterPath,
+        'genre_ids': movie.genreIds,
       });
     }
   }
@@ -91,6 +91,4 @@ class FirestoreDB {
     }
     return results;
   }
-
-  
 }

@@ -9,12 +9,14 @@ class Movie {
   String posterPath;
   int year;
   String id;
+  List<int> genreIds;
 
   Movie({
     required this.title,
     required this.posterPath,
     required this.year,
     required this.id,
+    required this.genreIds,
   });
 
   String get fullImageUrl => 'https://image.tmdb.org/t/p/w200$posterPath';
@@ -25,6 +27,7 @@ class Movie {
       'poster_path': posterPath,
       'release_date': year,
       'id': id,
+      'genres': genreIds,
     };
   }
 
@@ -47,6 +50,7 @@ class Movie {
       title: map['title'] ?? map['name'] ?? 'Unnamed',
       posterPath: map['poster_path'] ?? '',
       year: year,
+      genreIds: List<int>.from(map['genre_ids']),
       id: map['id'].toString(),
     );
     return res;
@@ -62,6 +66,7 @@ class Movie {
       posterPath: snapshot['poster_path'] ?? '',
       year: int.tryParse(snapshot['release_date'].substring(0, 4)) ?? 0,
       id: snapshot.id,
+      genreIds: snapshot['genre_ids'],
     );
   }
 }
