@@ -51,17 +51,10 @@ class ReviewsPage extends StatelessWidget {
                 child: Text(
                     'Showing ${genreController.genres[genreIdFilter.value]}'),
               ),
-            const Text(
-              'My Reviews',
-              textAlign: TextAlign.left,
-            ),
+            Align(
             addVerticalSpace(10),
             if (_myReviews.isEmpty) const Text('      No shows here'),
-            if (_myReviews.isNotEmpty)
-              FilmStrip(data: _myReviews, genre: genreIdFilter.value),
-            const Text(
-              'Recommended',
-              textAlign: TextAlign.left,
+            Align(
             ),
             addVerticalSpace(10),
             if (_allReviews.isEmpty) const Text('      No shows here'),
