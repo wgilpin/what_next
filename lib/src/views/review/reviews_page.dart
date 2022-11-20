@@ -7,6 +7,7 @@ import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
+import 'package:what_next/src/views/review/film_grid.dart';
 import 'package:what_next/src/views/review/film_strip.dart';
 
 class ReviewsPage extends StatelessWidget {
@@ -16,17 +17,16 @@ class ReviewsPage extends StatelessWidget {
 
   ReviewsPage({super.key});
 
-  final RxList<List<Review>> data = RxList<List<Review>>([]);
-  final RxList<String> labels = RxList<String>([]);
+  final RxList<Review> _myReviews = RxList<Review>([]);
+  final RxList<Review> _allReviews = RxList<Review>([]);
   RxInt genreIdFilter = RxInt(-1);
 
   @override
   Widget build(BuildContext context) {
-    labels.add('My Reviews');
-    data.add(myReviewsController.reviews);
-    labels.add("Other People's");
-    data.add(reviewsController.reviews);
-    data.refresh();
+    _myReviews.addAll(myReviewsController.reviews);
+    _allReviews.addAll(reviewsController.reviews);
+    _myReviews.refresh();
+    _allReviews.refresh();
     return Scaffold(
       appBar: AppBar(
         title: const Text('What Next'),
@@ -39,13 +39,11 @@ class ReviewsPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Obx(() {
-          labels.clear();
-          data.clear();
-          labels.add('My Reviews');
-          data.add(myReviewsController.reviews);
-          labels.add("Other People's");
-          data.add(reviewsController.reviews);
-          print('data: ${data.length}');
+          _myReviews.clear();
+          _allReviews.clear();
+          _myReviews.addAll(myReviewsController.reviews);
+          _allReviews.addAll(reviewsController.reviews);
+          print('data: ${_myReviews.length}');
           return Column(children: [
             if (genreIdFilter.value >= 0)
               Padding(
@@ -53,29 +51,24 @@ class ReviewsPage extends StatelessWidget {
                 child: Text(
                     'Showing ${genreController.genres[genreIdFilter.value]}'),
               ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          labels[index],
-                          textAlign: TextAlign.left,
-                        ),
-                        addVerticalSpace(10),
-                        if (data[index].isEmpty)
-                          const Text('      No shows here'),
-                        if (data[index].isNotEmpty)
-                          FilmStrip(
-                              data: data[index], genre: genreIdFilter.value),
-                      ],
-                    ),
-                  );
-                }),
+            const Text(
+              'My Reviews',
+              textAlign: TextAlign.left,
+            ),
+            addVerticalSpace(10),
+            if (_myReviews.isEmpty) const Text('      No shows here'),
+            if (_myReviews.isNotEmpty)
+              FilmStrip(data: _myReviews, genre: genreIdFilter.value),
+            const Text(
+              'Recommended',
+              textAlign: TextAlign.left,
+            ),
+            addVerticalSpace(10),
+            if (_allReviews.isEmpty) const Text('      No shows here'),
+            if (_allReviews.isNotEmpty)
+              Expanded(
+                  child:
+                      FilmGrid(data: _allReviews, genre: genreIdFilter.value)),
           ]);
         }),
       ),
