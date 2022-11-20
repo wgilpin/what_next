@@ -19,7 +19,7 @@ class EditReview extends StatelessWidget {
     await FirestoreDB().addReview(review);
     _commentController.clear();
     Get.snackbar("Saved", review.title, snackPosition: SnackPosition.BOTTOM);
-    Get.offAll(const MyReviewsPage());
+    Get.offAll(MyReviewsPage());
   }
 
   @override

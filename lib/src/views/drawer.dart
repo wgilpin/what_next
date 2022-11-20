@@ -32,7 +32,7 @@ Drawer getDrawer() {
               title: const Text('My Shows'),
               leading: const Icon(Icons.movie),
               onTap: () {
-                Get.to(const MyReviewsPage());
+                Get.to(MyReviewsPage());
               },
             ),
             ListTile(
