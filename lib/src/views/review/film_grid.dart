@@ -3,10 +3,9 @@ import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/views/review/show_widget.dart';
 
 class FilmGrid extends StatelessWidget {
-  const FilmGrid({super.key, required this.data, required this.genre});
+  const FilmGrid({super.key, required this.data});
 
   final List<Review> data;
-  final int genre;
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +15,12 @@ class FilmGrid extends StatelessWidget {
         shrinkWrap: true,
         itemCount: data.length,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200, childAspectRatio: .6),
+            maxCrossAxisExtent: 200, mainAxisExtent: 300, childAspectRatio: .6),
         scrollDirection: Axis.vertical,
         itemBuilder: (BuildContext context, int index) {
-          if (genre < 0 || data[index].genreIds.contains(genre)) {
-            return ShowWidget(
-              review: data[index],
-            );
-          } else {
-            return const SizedBox();
-          }
+          return ShowWidget(
+            review: data[index],
+          );
         },
       ),
     );

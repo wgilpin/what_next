@@ -39,10 +39,7 @@ class ReviewsPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Obx(() {
-          _myReviews.clear();
-          _allReviews.clear();
-          _myReviews.addAll(myReviewsController.reviews);
-          _allReviews.addAll(reviewsController.reviews);
+          applyFilter();
           print('data: ${_myReviews.length}');
           return Column(children: [
             if (genreIdFilter.value >= 0)
@@ -51,17 +48,31 @@ class ReviewsPage extends StatelessWidget {
                 child: Text(
                     'Showing ${genreController.genres[genreIdFilter.value]}'),
               ),
+            addVerticalSpace(20),
             Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                ' My Reviews',
+                style: Theme.of(context).textTheme.headline4,
+                textAlign: TextAlign.left,
+              ),
+            ),
             addVerticalSpace(10),
             if (_myReviews.isEmpty) const Text('      No shows here'),
+            if (_myReviews.isNotEmpty) FilmStrip(data: _myReviews),
+            addVerticalSpace(30),
             Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                ' Recommended',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.headline4,
+              ),
             ),
             addVerticalSpace(10),
             if (_allReviews.isEmpty) const Text('      No shows here'),
             if (_allReviews.isNotEmpty)
-              Expanded(
-                  child:
-                      FilmGrid(data: _allReviews, genre: genreIdFilter.value)),
+              Expanded(child: FilmGrid(data: _allReviews)),
           ]);
         }),
       ),
@@ -130,6 +141,24 @@ class ReviewsPage extends StatelessWidget {
       debugPrint(
           'Filtering on $genreIdFilter.value = ${genreController.genreNameAt(idx)}');
     }
+    // update local lists for filter
+    applyFilter();
     Get.back();
+  }
+
+  void applyFilter() {
+    _myReviews.clear();
+    _allReviews.clear();
+    if (genreIdFilter >= 0) {
+      // apply filter
+      _myReviews.addAll(myReviewsController.reviews
+          .where((show) => show.genreIds.contains(genreIdFilter.value)));
+      _allReviews.addAll(reviewsController.reviews
+          .where((show) => show.genreIds.contains(genreIdFilter.value)));
+    } else {
+      // clear filters
+      _myReviews.addAll(myReviewsController.reviews);
+      _allReviews.addAll(reviewsController.reviews);
+    }
   }
 }
