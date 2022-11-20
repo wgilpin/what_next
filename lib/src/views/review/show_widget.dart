@@ -33,11 +33,9 @@ class ShowWidget extends StatelessWidget {
                 ),
               ),
               addVerticalSpace(10),
-              Center(
-                child: StarRating(
-                  rating: review.rating,
-                ),
-              )
+              StarRating(
+                rating: review.rating,
+              ),
             ],
           ),
         ),
