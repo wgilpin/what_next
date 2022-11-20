@@ -51,6 +51,7 @@ class _StarRatingState extends State<StarRating> {
   @override
   Widget build(BuildContext context) {
     return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(
             widget.starCount, (index) => buildStar(context, index)));
   }
