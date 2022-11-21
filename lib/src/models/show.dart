@@ -20,6 +20,7 @@ class Show {
   });
 
   String get fullImageUrl => 'https://image.tmdb.org/t/p/w200$posterPath';
+  String get fullImageUrlLarge => 'https://image.tmdb.org/t/p/w400$posterPath';
 
   Map<String, dynamic> toMap() {
     return {

@@ -9,6 +9,7 @@ import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/edit_review.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
 import 'package:what_next/src/views/review/film_grid.dart';
+import 'package:what_next/src/views/review/review_details_page.dart';
 
 class MyReviewsPage extends GetWidget<MyReviewsCtl> {
   final searcher = Get.put(ShowSearchCtl());
@@ -42,7 +43,11 @@ class MyReviewsPage extends GetWidget<MyReviewsCtl> {
                       child: Text('No shows added yet'),
                     );
                   } else {
-                    return Expanded(child: FilmGrid(data: controller.reviews));
+                    return Expanded(
+                        child: FilmGrid(
+                      data: controller.reviews,
+                      onTapShow: showDetails,
+                    ));
                   }
                 }),
               ],
@@ -59,6 +64,10 @@ class MyReviewsPage extends GetWidget<MyReviewsCtl> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void showDetails(String reviewId) {
+    Get.to(ReviewDetailsPage(reviewId: reviewId));
   }
 
   Widget buildFloatingSearchBar(BuildContext context) {

@@ -9,6 +9,7 @@ import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
 import 'package:what_next/src/views/review/film_grid.dart';
 import 'package:what_next/src/views/review/film_strip.dart';
+import 'package:what_next/src/views/review/review_details_page.dart';
 
 class ReviewsPage extends StatelessWidget {
   final MyReviewsCtl myReviewsController = Get.put(MyReviewsCtl());
@@ -59,7 +60,11 @@ class ReviewsPage extends StatelessWidget {
             ),
             addVerticalSpace(10),
             if (_myReviews.isEmpty) const Text('      No shows here'),
-            if (_myReviews.isNotEmpty) FilmStrip(data: _myReviews),
+            if (_myReviews.isNotEmpty)
+              FilmStrip(
+                data: _myReviews,
+                onTapShow: showDetails,
+              ),
             addVerticalSpace(30),
             Align(
               alignment: Alignment.centerLeft,
@@ -72,7 +77,11 @@ class ReviewsPage extends StatelessWidget {
             addVerticalSpace(10),
             if (_allReviews.isEmpty) const Text('      No shows here'),
             if (_allReviews.isNotEmpty)
-              Expanded(child: FilmGrid(data: _allReviews)),
+              Expanded(
+                  child: FilmGrid(
+                data: _allReviews,
+                onTapShow: showDetails,
+              )),
           ]);
         }),
       ),
@@ -85,6 +94,10 @@ class ReviewsPage extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void showDetails(String reviewId) {
+    Get.to(ReviewDetailsPage(reviewId: reviewId));
   }
 
   void openFilters() {

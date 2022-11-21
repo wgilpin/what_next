@@ -69,7 +69,7 @@ class FirestoreDB {
   }
 
   // remove duplicate reviews and work out average ratings
-  List<Review> processReviews(
+  static List<Review> processReviews(
       {required List<Review> rawReviews, required String user}) {
     List<Review> results = [];
     var groups = groupBy(rawReviews, (Review r) => r.movieId);
