@@ -27,11 +27,6 @@ class AuthCtl extends GetxController {
 
   Future<void> login(String email, String password) async {
     try {
-      // DEBUG:
-      if (email == '' && password == '') {
-        email = 'wgilpin@gmail.com';
-        password = 'tortois1';
-      }
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       Get.snackbar("Error logging in", e.toString(),
