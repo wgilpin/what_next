@@ -30,7 +30,7 @@ class _ReviewDetailsPageState extends State<ReviewDetailsPage> {
     review = getReview(widget.reviewId);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Review Details'),
+        title: Text(review.title),
       ),
       body: FutureBuilder<List<Review>>(
           future: reviewsController.getReviewsForShow(widget.reviewId),
@@ -82,23 +82,17 @@ class _ReviewDetailsPageState extends State<ReviewDetailsPage> {
   }
 
   getCard(Review review, List<Review> reviewsForShow) {
-    return Card(
-      child: Padding(
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.center,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 500),
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Image.network(
               review.fullImageUrlLarge,
               // height: 200,
-            ),
-            addVerticalSpace(10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                review.title,
-                style: Theme.of(context).textTheme.headline5,
-                overflow: TextOverflow.ellipsis,
-              ),
             ),
             addVerticalSpace(10),
             ListView.builder(
@@ -109,8 +103,11 @@ class _ReviewDetailsPageState extends State<ReviewDetailsPage> {
                     key: Key('$index'),
                     children: [
                       ListTile(
-                        title: StarRating(
-                          rating: reviewsForShow[index].rating,
+                        title: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: StarRating(
+                            rating: reviewsForShow[index].rating,
+                          ),
                         ),
                         subtitle: Text(reviewsForShow[index].comment),
                         tileColor: Colors.black12,
