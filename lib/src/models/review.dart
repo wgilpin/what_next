@@ -108,4 +108,20 @@ class Review extends Show {
     );
     return review;
   }
+
+  static Review clone(Review review) {
+    return Review(
+      title: review.title,
+      posterPath: review.posterPath,
+      year: review.year,
+      logo: review.logo,
+      rating: review.rating,
+      service: review.service,
+      user: review.user,
+      when: review.when,
+      comment: review.comment,
+      movieId: review.movieId,
+      genreIds: review.genreIds,
+    );
+  }
 }
