@@ -20,7 +20,7 @@ class LoginPage extends GetWidget<AuthCtl> {
       snackPosition: SnackPosition.BOTTOM);
 
   Future<void> doLogin() async {
-    if (!GetUtils.isEmail(passwordCtl.text)) {
+    if (!GetUtils.isEmail(emailCtl.text)) {
       showSnack('Not a valid email address');
       return;
     }
