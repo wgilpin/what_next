@@ -24,6 +24,7 @@ class EditReview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _commentController.text = review.comment;
     return Material(
       child: Center(
         child: Center(
@@ -53,6 +54,7 @@ class EditReview extends StatelessWidget {
                 addVerticalSpace(20),
                 TextFormField(
                   controller: _commentController,
+                  maxLines: null,
                   decoration:
                       const InputDecoration(hintText: 'Add your comment'),
                 ),

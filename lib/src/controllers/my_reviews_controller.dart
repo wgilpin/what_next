@@ -16,4 +16,20 @@ class MyReviewsCtl extends GetxController {
     reviewList.bindStream(FirestoreDB().reviewsForUserStream(uid));
     print('MyReviewsController bound to stream');
   }
+
+  // if I have a review for this show, return it. If not, return null
+  Future<Review?> getMyReview(String showId) async {
+    var uid = Get.find<AuthCtl>().user!.uid;
+    return FirestoreDB()
+        .firestore
+        .collectionGroup('review')
+        .where('user', isEqualTo: uid)
+        .where('movie_id', isEqualTo: showId)
+        .get()
+        .then((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        return Review.fromSnapshot(snapshot.docs[0]);
+      }
+    });
+  }
 }

@@ -65,7 +65,8 @@ class FirestoreDB {
         .collection('movies')
         .doc(review.movieId)
         .collection('reviews')
-        .add(review.toMap());
+        .doc(review.user)
+        .set(review.toMap());
   }
 
   // remove duplicate reviews and work out average ratings
