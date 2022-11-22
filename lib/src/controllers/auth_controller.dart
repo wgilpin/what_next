@@ -29,7 +29,7 @@ class AuthCtl extends GetxController {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
-      Get.snackbar("Error logging in", e.toString(),
+      Get.snackbar("Unable to log in", e.toString(),
           snackPosition: SnackPosition.BOTTOM);
     }
   }

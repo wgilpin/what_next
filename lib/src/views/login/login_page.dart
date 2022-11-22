@@ -5,16 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/utils/layout.dart';
-import 'package:what_next/src/utils/root.dart';
 import 'package:what_next/src/views/login/register_page.dart';
 import 'package:what_next/src/views/review/reviews_page.dart';
 
 class LoginPage extends GetWidget<AuthCtl> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailCtl = TextEditingController();
+  final TextEditingController passwordCtl = TextEditingController();
+
+  void showSnack(text) => Get.snackbar('Error', text,
+      icon: Icon(
+        Icons.warning,
+        color: Colors.red,
+      ),
+      snackPosition: SnackPosition.BOTTOM);
 
   Future<void> doLogin() async {
-    await controller.login(emailController.text, passwordController.text);
+    if (!GetUtils.isEmail(passwordCtl.text)) {
+      showSnack('Not a valid email address');
+      return;
+    }
+    await controller.login(emailCtl.text, passwordCtl.text);
     if (controller.user != null) {
       Get.offAll(ReviewsPage());
     } else {
@@ -36,12 +46,12 @@ class LoginPage extends GetWidget<AuthCtl> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Email'),
-                    controller: emailController,
+                    controller: emailCtl,
                   ),
                   addVerticalSpace(40),
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Password'),
-                    controller: passwordController,
+                    controller: passwordCtl,
                     obscureText: true,
                   ),
                   addVerticalSpace(40),

@@ -7,14 +7,15 @@ import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/utils/layout.dart';
 
 class RegisterPage extends GetWidget<AuthCtl> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailCtl = TextEditingController();
+  final TextEditingController passwordCtl = TextEditingController();
+  final TextEditingController passwordCtl2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Login'),
+          title: const Text('Register'),
         ),
         body: Center(
           child: Padding(
@@ -24,21 +25,23 @@ class RegisterPage extends GetWidget<AuthCtl> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Email'),
-                    controller: emailController,
+                    controller: emailCtl,
                   ),
                   addVerticalSpace(40),
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Password'),
-                    controller: passwordController,
+                    controller: passwordCtl,
+                    obscureText: true,
+                  ),
+                  addVerticalSpace(40),
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Confirm password'),
+                    controller: passwordCtl2,
                     obscureText: true,
                   ),
                   addVerticalSpace(40),
                   ElevatedButton(
-                    onPressed: () {
-                      controller.createUser(
-                          emailController.text, passwordController.text);
-                      Get.back();
-                    },
+                    onPressed: validate,
                     child: Text(
                       'Sign Up',
                       style: TextStyle(color: Colors.white),
@@ -47,5 +50,29 @@ class RegisterPage extends GetWidget<AuthCtl> {
                 ],
               )),
         ));
+  }
+
+  void showSnack(text) => Get.snackbar('Error', text,
+      icon: Icon(
+        Icons.warning,
+        color: Colors.red,
+      ),
+      snackPosition: SnackPosition.BOTTOM);
+
+  void validate() {
+    if (passwordCtl.text != passwordCtl2.text) {
+      showSnack('Passwords do not match or are shorter than 7 characters');
+      return;
+    }
+    if (passwordCtl.text.length < 7) {
+      showSnack('Password needs to be longer than 7 characters');
+      return;
+    }
+    if (!GetUtils.isEmail(passwordCtl.text)) {
+      showSnack('Not a valid email address');
+      return;
+    }
+    controller.createUser(emailCtl.text, passwordCtl.text);
+    Get.back();
   }
 }
