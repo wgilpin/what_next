@@ -1,17 +1,10 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import {firestore} from "firebase-admin";
 
 admin.initializeApp();
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-export const helloWorld = functions
-    .region("europe-west1")
-    .https.onRequest((request, response) => {
-      functions.logger.info("Hello logs!", {structuredData: true});
-      response.send("Hello from Firebase!");
-    });
+// https://firebase.google.com/docs/functions/typescript
 
 export const newUser = functions
     .region("europe-west1")
@@ -21,6 +14,23 @@ export const newUser = functions
         display_name: user.displayName?.toLowerCase(),
       });
       functions.logger.info("New user created", {structuredData: true});
+      functions.logger.info(user); // log the user object
+      return null;
+    });
+
+export const removeUser = functions
+    .region("europe-west1")
+    .auth.user()
+    .onDelete(async (user) => {
+      firestore().collection("users").doc(user.uid).delete();
+      const docs = await firestore()
+          .collectionGroup("reviews")
+          .where("user", "==", user.uid)
+          .get();
+      docs.forEach((element) => {
+        element.ref.delete();
+      });
+      functions.logger.info("User deleted", {structuredData: true});
       functions.logger.info(user); // log the user object
       return null;
     });
