@@ -7,6 +7,7 @@ import 'package:what_next/src/models/review.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/drawer.dart';
 import 'package:what_next/src/views/edit/find_show.dart';
+import 'package:what_next/src/views/friends_page.dart';
 import 'package:what_next/src/views/review/film_grid.dart';
 import 'package:what_next/src/views/review/film_strip.dart';
 import 'package:what_next/src/views/review/review_details_page.dart';
@@ -60,17 +61,20 @@ class ReviewsPage extends StatelessWidget {
             ),
             addVerticalSpace(10),
             if (_myReviews.isEmpty)
-              Column(
-                children: [
-                  const Text('      No shows here'),
-                  addVerticalSpace(20),
-                  ElevatedButton.icon(
-                    onPressed: () => Get.to(const FindShowForm()),
-                    icon: const Icon(Icons.edit),
-                    label: const Text('Add your first review'),
-                  ),
-                ],
-              ),
+              if (genreIdFilter < 0)
+                Column(
+                  children: [
+                    const Text('      No shows here'),
+                    addVerticalSpace(20),
+                    ElevatedButton.icon(
+                      onPressed: () => Get.to(const FindShowForm()),
+                      icon: const Icon(Icons.edit),
+                      label: const Text('Add your first review'),
+                    ),
+                  ],
+                )
+              else
+                const Text('    No shows in this genre'),
             if (_myReviews.isNotEmpty)
               FilmStrip(
                 data: _myReviews,
@@ -86,7 +90,27 @@ class ReviewsPage extends StatelessWidget {
               ),
             ),
             addVerticalSpace(10),
-            if (_allReviews.isEmpty) const Text('      No shows here'),
+            if (_allReviews.isEmpty)
+              Column(
+                children: [
+                  const Text('      No shows yet'),
+                  addVerticalSpace(40),
+                  if (genreIdFilter < 0)
+                    Column(
+                      children: [
+                        const Text(
+                            '      Reviews your friends add will appear here'),
+                        addVerticalSpace(30),
+                        ElevatedButton.icon(
+                            onPressed: () => Get.to(FriendsPage()),
+                            icon: const Icon(Icons.person_add),
+                            label: const Text('Add a friend'))
+                      ],
+                    )
+                  else
+                    const Text('    No shows in this genre'),
+                ],
+              ),
             if (_allReviews.isNotEmpty)
               Expanded(
                   child: FilmGrid(
