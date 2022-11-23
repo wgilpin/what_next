@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/bindings/auth_binding.dart';
@@ -18,6 +21,15 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  if (kDebugMode) {
+    try {
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+    } catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+  }
   runApp(const MyApp());
 }
 
