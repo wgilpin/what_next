@@ -59,7 +59,18 @@ class ReviewsPage extends StatelessWidget {
               ),
             ),
             addVerticalSpace(10),
-            if (_myReviews.isEmpty) const Text('      No shows here'),
+            if (_myReviews.isEmpty)
+              Column(
+                children: [
+                  const Text('      No shows here'),
+                  addVerticalSpace(20),
+                  ElevatedButton.icon(
+                    onPressed: () => Get.to(const FindShowForm()),
+                    icon: const Icon(Icons.edit),
+                    label: const Text('Add your first review'),
+                  ),
+                ],
+              ),
             if (_myReviews.isNotEmpty)
               FilmStrip(
                 data: _myReviews,
