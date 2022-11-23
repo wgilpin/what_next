@@ -68,7 +68,7 @@ class RegisterPage extends GetWidget<AuthCtl> {
       showSnack('Password needs to be longer than 7 characters');
       return;
     }
-    if (!GetUtils.isEmail(passwordCtl.text)) {
+    if (!GetUtils.isEmail(emailCtl.text)) {
       showSnack('Not a valid email address');
       return;
     }
