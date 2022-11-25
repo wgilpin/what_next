@@ -35,4 +35,9 @@ class ServiceCtl extends GetxController {
     serviceList[otherIdx] = temp;
     debugPrint('fetchAllServices: ${serviceList.length}');
   }
+
+  String getUrlForService(String service) {
+    var srv = serviceList.firstWhere((element) => element.title == service);
+    return srv.url!;
+  }
 }

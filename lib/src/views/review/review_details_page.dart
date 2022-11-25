@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/controllers/my_reviews_controller.dart';
 import 'package:what_next/src/controllers/reviews_controller.dart';
+import 'package:what_next/src/controllers/service_controller.dart';
 import 'package:what_next/src/utils/layout.dart';
 import 'package:what_next/src/views/edit/edit_review.dart';
 import 'package:what_next/src/views/edit/star_rating.dart';
@@ -24,6 +25,7 @@ class _ReviewDetailsPageState extends State<ReviewDetailsPage> {
   final reviewsController = Get.find<ReviewsCtl>();
   final myReviewsController = Get.find<MyReviewsCtl>();
   final authCtl = Get.find<AuthCtl>();
+  final services = Get.find<ServiceCtl>();
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,12 @@ class _ReviewDetailsPageState extends State<ReviewDetailsPage> {
                     key: Key('$index'),
                     children: [
                       ListTile(
+                        isThreeLine: true,
+                        trailing: Image.network(
+                          services.getUrlForService(review.service),
+                          width: 50,
+                          height: 50,
+                        ),
                         title: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: StarRating(

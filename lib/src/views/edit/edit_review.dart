@@ -60,7 +60,11 @@ class EditReview extends StatelessWidget {
                       const InputDecoration(hintText: 'Add your comment'),
                 ),
                 addVerticalSpace(20),
-                ServicesChooser(),
+                ServicesChooser(
+                    initialService: review.service,
+                    onChanged: (service) => {
+                          review.service = service,
+                        }),
                 addVerticalSpace(20),
                 SaveCancel(
                   saveLbl: 'Save',
