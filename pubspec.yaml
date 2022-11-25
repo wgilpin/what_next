@@ -29,10 +29,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cloud_firestore: ^4.0.3
+  cloud_firestore: ^4.1.0
   cupertino_icons: ^1.0.2
-  firebase_auth: ^4.1.0
-  firebase_core: ^2.1.1
+  firebase_auth: ^4.1.4
+  firebase_core: ^2.3.0
   flutter:
     sdk: flutter
   tmdb_api: ^2.1.4
@@ -40,6 +40,8 @@ dependencies:
   get: ^4.6.5
   material_floating_search_bar: ^0.3.7
   flutter_gen: ^5.1.0+1
+  firebase_storage: ^11.0.6
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0
