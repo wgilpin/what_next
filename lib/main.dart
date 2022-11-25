@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
-import 'package:what_next/src/controllers/bindings/auth_binding.dart';
+import 'package:what_next/src/controllers/bindings/app_binding.dart';
 import 'package:what_next/src/theme.dart';
 import 'package:what_next/src/utils/root.dart';
 import 'firebase_options.dart';
