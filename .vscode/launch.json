@@ -5,7 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "what_next",
+            "name": "what_next emulator",
+            "request": "launch",
+            "args": ["--dart-define=EMULATOR=true"],
+            "type": "dart",
+        },
+        {
+            "name": "what_next - debug + firestore",
             "request": "launch",
             "type": "dart",
         },
