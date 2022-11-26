@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
+import 'package:what_next/src/views/about.dart';
 import 'package:what_next/src/views/friends_page.dart';
 import 'package:what_next/src/views/login/login_page.dart';
 import 'package:what_next/src/views/review/reviews_page.dart';
@@ -40,6 +41,13 @@ Drawer getDrawer() {
               leading: const Icon(Icons.groups),
               onTap: () {
                 Get.to(FriendsPage());
+              },
+            ),
+            ListTile(
+              title: const Text('About'),
+              leading: const Icon(Icons.info),
+              onTap: () {
+                Get.to(const AboutPage());
               },
             ),
           ],
