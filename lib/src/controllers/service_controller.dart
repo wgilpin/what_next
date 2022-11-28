@@ -37,6 +37,10 @@ class ServiceCtl extends GetxController {
   }
 
   String getUrlForService(String service) {
+    if (service.isEmpty) {
+      debugPrint('getUrlForService: service is empty');
+      return serviceList[0].url!;
+    }
     var srv = serviceList.firstWhere((element) => element.title == service);
     return srv.url!;
   }
