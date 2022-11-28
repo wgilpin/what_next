@@ -1,30 +1,37 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Import the test package and Counter class
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:what_next/main.dart';
+import 'package:what_next/src/controllers/service_controller.dart';
+import 'package:what_next/src/models/service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  late ServiceCtl srv;
+  group('Service Controller', () {
+    setUp(() {
+      srv = ServiceCtl();
+      srv.serviceList.add(
+          Service(title: 'Other', fileName: 'other.png', url: 'other/url'));
+      srv.serviceList.add(Service(
+          title: 'Netflix', fileName: 'netflix.png', url: 'netflix/url'));
+      srv.serviceList.add(
+          Service(title: 'Amazon', fileName: 'amazon.png', url: 'amazon/url'));
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('serviceList should have 3 entries', () {
+      expect(srv.serviceList.length, equals(3));
+    });
+    test('getUrlForService should return other by default', () {
+      var url = srv.getUrlForService('');
+      expect(url, 'other/url');
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('getUrlForService should return correct url', () {
+      var url = srv.getUrlForService('Netflix');
+      expect(url, 'netflix/url');
+      url = srv.getUrlForService('Amazon');
+      expect(url, 'amazon/url');
+      url = srv.getUrlForService('Other');
+      expect(url, 'other/url');
+    });
   });
 }
