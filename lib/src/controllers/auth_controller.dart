@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class AuthCtl extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth;
+
+  AuthCtl(this.auth);
+
   final Rxn<User> _firebaseUser = Rxn<User>();
   final verificationEmailSent = false.obs;
 
@@ -11,13 +14,13 @@ class AuthCtl extends GetxController {
 
   @override
   void onInit() {
-    _firebaseUser.bindStream(_auth.authStateChanges());
+    _firebaseUser.bindStream(auth.authStateChanges());
     super.onInit();
   }
 
   Future<void> createUser(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
           email: email, password: password);
     } catch (e) {
       Get.snackbar("Error creating account", e.toString(),
@@ -27,7 +30,7 @@ class AuthCtl extends GetxController {
 
   Future<void> login(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       Get.snackbar("Unable to log in", e.toString(),
           snackPosition: SnackPosition.BOTTOM);
@@ -36,7 +39,7 @@ class AuthCtl extends GetxController {
 
   signOut() async {
     try {
-      await _auth.signOut();
+      await auth.signOut();
     } catch (e) {
       Get.snackbar("Error signing out", e.toString(),
           snackPosition: SnackPosition.BOTTOM);

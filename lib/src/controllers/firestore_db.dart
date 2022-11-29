@@ -7,7 +7,10 @@ import 'package:what_next/src/models/review.dart';
 import "package:collection/collection.dart";
 
 class FirestoreDB {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirestoreDB([FirebaseFirestore? firestore])
+      : firestore = firestore ?? FirebaseFirestore.instance;
+
+  final FirebaseFirestore firestore;
 
   Stream<List<Review>> reviewsForUserStream(String uid) {
     debugPrint('in reviewsForUserStream');
