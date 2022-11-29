@@ -10,7 +10,8 @@ import '../models/show.dart';
 typedef GenreMap = Map<int, String>;
 
 class TmdbService {
-  final Dio _dio = Dio();
+  final Dio _dio;
+  TmdbService([dio]) : _dio = dio ?? Dio();
 
   static const String _apiKey = 'f677412008f378e0d65efdb2e542aa1f';
 
@@ -21,7 +22,8 @@ class TmdbService {
           "$kind?api_key=$_apiKey&query=${Uri.encodeComponent(title)}";
       debugPrint('url: $url');
       final response = await _dio.get(url);
-      final results = List<Map<String, dynamic>>.from(response.data['results']);
+      final interim = response.data['results'];
+      final results = List<Map<String, dynamic>>.from(interim);
       List<Show> shows =
           results.map((movieData) => Show.fromMap(movieData)).toList();
       debugPrint('$kind ->');
@@ -46,12 +48,16 @@ class TmdbService {
   // Get the list of genres for movies and tv shows
   Future<GenreMap> getGenres() async {
     try {
+      debugPrint('getting genres');
+
       late GenreMap genres = {};
       await Future.wait([
         _dio
             .get(
                 "https://api.themoviedb.org/3/genre/movie/list?api_key=$_apiKey")
             .then((response) {
+          debugPrint("got movie genres. ${response.data['genres']}");
+
           for (var map in response.data['genres']) {
             genres[map['id']] = map['name'];
           }
@@ -59,6 +65,8 @@ class TmdbService {
         _dio
             .get("https://api.themoviedb.org/3/genre/tv/list?api_key=$_apiKey")
             .then((response) {
+          debugPrint("got tv genres. ${response.data['genres']}");
+
           for (var map in response.data['genres']) {
             genres[map['id']] = map['name'];
           }
@@ -66,6 +74,7 @@ class TmdbService {
       ]);
       return genres;
     } on DioError catch (dioError) {
+      debugPrint('dioError: $dioError');
       throw ShowsException.fromDioError(dioError);
     }
   }

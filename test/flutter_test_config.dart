@@ -80,7 +80,8 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
       }
     }
 
-    debugPrint(mockDb!.dump());
+    // debugPrint(mockDb!.dump());
+
     // ignore: unnecessary_cast
     Get.put(MockAuthCtl(MockFirebaseAuth()) as AuthCtl);
   });

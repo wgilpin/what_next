@@ -6,6 +6,11 @@ import '../models/show.dart';
 import 'show_exception.dart';
 
 class ShowSearchCtl extends GetxController {
+  late final Dio _dio;
+
+  // inject TMDB for testing
+  ShowSearchCtl([Dio? dio]) : _dio = dio ?? Dio();
+
   var searchResults = <Show>[].obs;
   GenreMap genres = {};
 
@@ -16,8 +21,8 @@ class ShowSearchCtl extends GetxController {
       // get the genre list if not already loaded, and the search results
       await Future.wait([
         if (genres.isEmpty)
-          TmdbService().getGenres().then((newGenres) => genres = newGenres),
-        TmdbService()
+          TmdbService(_dio).getGenres().then((newGenres) => genres = newGenres),
+        TmdbService(_dio)
             .search(text: text)
             .then((result) => interimResults = result),
       ]);
