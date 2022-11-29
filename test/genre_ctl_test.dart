@@ -3,14 +3,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:what_next/src/controllers/genre_controller.dart';
 
-import 'mock_tmdb.dart';
+import 'mock_dio.dart';
 
 void main() {
   late GenreCtl controller;
-  final mockTmdb = MockTmdb();
+  final mockDio = MockDio();
   group('My Reviews Controller', () {
     setUp(() {
-      controller = GenreCtl(mockTmdb);
+      controller = GenreCtl(mockDio);
     });
 
     test('genres loaded correctly', () async {
