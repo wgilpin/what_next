@@ -138,7 +138,7 @@ class _ReviewDetailsPageState extends State<ReviewDetailsPage> {
     if (mine.isNotEmpty) {
       return mine.first;
     }
-    var others = reviewsController.reviewList.where((r) => r.id == id);
+    var others = reviewsController.reviews.where((r) => r.id == id);
     return others.first;
   }
 

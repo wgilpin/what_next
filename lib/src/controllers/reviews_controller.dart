@@ -7,14 +7,19 @@ import 'package:what_next/src/controllers/firestore_db.dart';
 import '../models/review.dart';
 
 class ReviewsCtl extends GetxController {
-  RxList<Review> reviewList = RxList<Review>([]);
-  RxList<Review> reviewsForShowList = RxList<Review>([]);
+  final FirebaseFirestore firestore;
 
-  List<Review> get reviews => reviewList;
+  // DI of firestore for testing
+  ReviewsCtl([FirebaseFirestore? firestore])
+      : firestore = firestore ?? FirebaseFirestore.instance;
+
+  final RxList<Review> _reviewList = RxList<Review>([]);
+  final RxList<Review> reviewsForShowList = RxList<Review>([]);
+
+  List<Review> get reviews => _reviewList;
 
   Future<List<Review>> getReviewsForShow(String showId) {
-    return FirestoreDB()
-        .firestore
+    return firestore
         .collectionGroup('reviews')
         .where('movie_id', isEqualTo: showId)
         .get()
@@ -34,7 +39,7 @@ class ReviewsCtl extends GetxController {
     super.onReady();
     var uid = Get.find<AuthCtl>().user?.uid;
     if (uid != null) {
-      reviewList.bindStream(FirestoreDB().reviewsForUserStream(uid));
+      _reviewList.bindStream(FirestoreDB(firestore).reviewsForUserStream(uid));
       debugPrint('ReviewsController bound to stream');
     }
   }
