@@ -4,12 +4,18 @@ import 'package:what_next/src/services/tmdb_api.dart';
 typedef GenreMap = Map<int, String>;
 
 class GenreCtl extends GetxController {
+  late final TmdbService _tmdbService;
+
+  // inject TMDB for testing
+  GenreCtl([TmdbService? tmdbService])
+      : _tmdbService = tmdbService ?? TmdbService();
+
   var genres = GenreMap().obs;
   int get genreCount => genres.length;
 
   // get the genre list from TMDB
   Future<GenreMap> getGenres() async {
-    await TmdbService()
+    await _tmdbService
         .getGenres()
         .then((newGenres) => genres.value = newGenres);
     return genres;
