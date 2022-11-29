@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -8,10 +9,10 @@ import 'package:what_next/src/controllers/auth_controller.dart';
 
 import 'mock_auth_ctl.dart';
 
-FakeFirebaseFirestore? db;
+FakeFirebaseFirestore? mockDb;
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  db ??= FakeFirebaseFirestore();
+  mockDb ??= FakeFirebaseFirestore();
 
   setUp(() async {
     print('setUp');
@@ -52,7 +53,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
         {
           'comment': 'comment2',
           'genre_ids': [1, 2, 3],
-          'movie_id': '2',
+          'movie_id': '1',
           'poster_path': 'poster12',
           'rating': 5,
           'servie': 'amazon',
@@ -66,11 +67,12 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
     };
 
     for (int i = 0; i < movies.length; i++) {
-      await db!.collection('movies').doc(i.toString()).set(movies[i]);
+      // movie ids from 1
+      await mockDb!.collection('movies').doc((i + 1).toString()).set(movies[i]);
     }
     for (var review in reviews.entries) {
       for (var reviewData in review.value) {
-        await db!
+        await mockDb!
             .collection('movies')
             .doc(review.key)
             .collection('reviews')
@@ -78,6 +80,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
       }
     }
 
+    debugPrint(mockDb!.dump());
     // ignore: unnecessary_cast
     Get.put(MockAuthCtl(MockFirebaseAuth()) as AuthCtl);
   });
