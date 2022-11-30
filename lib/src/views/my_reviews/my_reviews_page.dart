@@ -25,33 +25,32 @@ class MyReviewsPage extends GetWidget<MyReviewsCtl> {
       drawer: getDrawer(),
       body: Stack(
         children: [
-          Expanded(
-            child: Column(
-              children: [
-                addVerticalSpace(60),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'My Reviews',
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
+          Column(
+            children: [
+              addVerticalSpace(60),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'My Reviews',
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                Obx(() {
-                  if (controller.reviews.isEmpty) {
-                    return const Center(
-                      child: Text('No shows added yet'),
-                    );
-                  } else {
-                    return Expanded(
-                        child: FilmGrid(
+              ),
+              Obx(() {
+                if (controller.reviews.isEmpty) {
+                  return const Center(
+                    child: Text('No shows added yet'),
+                  );
+                } else {
+                  return Expanded(
+                    child: FilmGrid(
                       data: controller.reviews,
                       onTapShow: showDetails,
-                    ));
-                  }
-                }),
-              ],
-            ),
+                    ),
+                  );
+                }
+              }),
+            ],
           ),
           buildFloatingSearchBar(context),
         ],
