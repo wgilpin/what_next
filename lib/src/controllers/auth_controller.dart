@@ -1,6 +1,8 @@
 //https://www.youtube.com/watch?v=-H-T_BSgfOE
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:what_next/src/views/login/login_page.dart';
+import 'package:what_next/src/views/review/reviews_page.dart';
 
 /// Controller for authentication
 class AuthCtl extends GetxController {
@@ -9,7 +11,7 @@ class AuthCtl extends GetxController {
   /// Inject FirebaseAuth dependency for testing
   AuthCtl(this.auth);
 
-  final Rxn<User> _firebaseUser = Rxn<User>();
+  Rxn<User> _firebaseUser = Rxn<User>();
 
   /// Has the verification link been sent?
   final verificationEmailSent = false.obs;
@@ -19,8 +21,20 @@ class AuthCtl extends GetxController {
 
   @override
   void onInit() {
+    _firebaseUser = Rxn<User>(auth.currentUser);
     _firebaseUser.bindStream(auth.authStateChanges());
+    ever(_firebaseUser, _setInitialScreen);
     super.onInit();
+  }
+
+  _setInitialScreen(User? user) {
+    if (user != null) {
+      //User Logged IN
+      Get.to(ReviewsPage());
+    } else {
+      //User Logged out
+      Get.to(LoginPage());
+    }
   }
 
   /// Create a new user with email and password
