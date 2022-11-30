@@ -15,7 +15,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   mockDb ??= FakeFirebaseFirestore();
 
   setUp(() async {
-    print('setUp');
+    debugPrint('test setUp');
     // fake movies
     const movies = [
       {

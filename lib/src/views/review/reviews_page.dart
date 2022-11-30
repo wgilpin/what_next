@@ -42,7 +42,6 @@ class ReviewsPage extends StatelessWidget {
       body: SafeArea(
         child: Obx(() {
           applyFilter();
-          print('data: ${_myReviews.length}');
           return Column(children: [
             if (genreIdFilter.value >= 0)
               Padding(

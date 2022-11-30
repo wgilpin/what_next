@@ -56,7 +56,7 @@ class TmdbService {
             .get(
                 "https://api.themoviedb.org/3/genre/movie/list?api_key=$_apiKey")
             .then((response) {
-          debugPrint("got movie genres. ${response.data['genres']}");
+          debugPrint("got movie genres");
 
           for (var map in response.data['genres']) {
             genres[map['id']] = map['name'];
@@ -65,7 +65,7 @@ class TmdbService {
         _dio
             .get("https://api.themoviedb.org/3/genre/tv/list?api_key=$_apiKey")
             .then((response) {
-          debugPrint("got tv genres. ${response.data['genres']}");
+          debugPrint("got tv genres");
 
           for (var map in response.data['genres']) {
             genres[map['id']] = map['name'];

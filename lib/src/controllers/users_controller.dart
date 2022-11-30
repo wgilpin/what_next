@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
-import 'package:what_next/src/controllers/firestore_db.dart';
 import 'package:what_next/src/models/user_profile.dart';
 
 class UserProfilesCtl extends GetxController {
@@ -15,7 +14,7 @@ class UserProfilesCtl extends GetxController {
     super.onReady();
     var uid = Get.find<AuthCtl>().user!.uid;
     _friendList.bindStream(friendsForUserStream(uid));
-    print('MyfriendsCtl bound to stream');
+    debugPrint('MyfriendsCtl bound to stream');
   }
 
   Stream<List<UserProfile>> friendsForUserStream(String uid) {
