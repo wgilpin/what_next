@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:what_next/src/controllers/auth_controller.dart';
 import 'package:what_next/src/models/show.dart';
 import 'package:what_next/src/models/review.dart';
+// ignore: depend_on_referenced_packages
 import "package:collection/collection.dart";
 
 class FirestoreDB {
@@ -12,11 +14,11 @@ class FirestoreDB {
 
   final FirebaseFirestore firestore;
 
-  Stream<List<Review>> reviewsForUserStream(String uid) {
+  Stream<List<Review>> reviewsForUserStream() {
     debugPrint('in reviewsForUserStream');
     return firestore
         .collectionGroup('reviews')
-        .where('user', isEqualTo: uid)
+        .where('user', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
         .snapshots()
         .map((QuerySnapshot query) {
       List<Review> reviews = [];

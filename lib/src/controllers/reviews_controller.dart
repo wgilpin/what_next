@@ -15,8 +15,14 @@ class ReviewsCtl extends GetxController {
 
   final RxList<Review> _reviewList = RxList<Review>([]);
   final RxList<Review> reviewsForShowList = RxList<Review>([]);
-
   List<Review> get reviews => _reviewList;
+
+  @override
+  void onReady() {
+    super.onReady();
+    _reviewList.bindStream(FirestoreDB(firestore).reviewsForUserStream());
+    debugPrint('ReviewsController bound to stream');
+  }
 
   Future<List<Review>> getReviewsForShow(String showId) {
     return firestore
@@ -32,15 +38,5 @@ class ReviewsCtl extends GetxController {
       debugPrint('reviews for show $showId: ${reviewsForShow.length}');
       return reviewsForShow;
     });
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    var uid = Get.find<AuthCtl>().user?.uid;
-    if (uid != null) {
-      _reviewList.bindStream(FirestoreDB(firestore).reviewsForUserStream(uid));
-      debugPrint('ReviewsController bound to stream');
-    }
   }
 }

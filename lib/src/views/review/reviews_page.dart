@@ -13,9 +13,9 @@ import 'package:what_next/src/views/review/film_strip.dart';
 import 'package:what_next/src/views/review/review_details_page.dart';
 
 class ReviewsPage extends StatelessWidget {
-  final MyReviewsCtl myReviewsController = Get.put(MyReviewsCtl());
-  final ReviewsCtl reviewsController = Get.put(ReviewsCtl());
-  final GenreCtl genreController = Get.put(GenreCtl());
+  final MyReviewsCtl myReviewsController = Get.find<MyReviewsCtl>();
+  final ReviewsCtl reviewsController = Get.find<ReviewsCtl>();
+  final GenreCtl genreController = Get.find<GenreCtl>();
 
   ReviewsPage({super.key});
 

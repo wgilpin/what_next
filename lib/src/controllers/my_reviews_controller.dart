@@ -8,18 +8,17 @@ import '../models/review.dart';
 
 class MyReviewsCtl extends GetxController {
   final FirebaseFirestore firestore;
-  RxList<Review> reviewList = RxList<Review>([]);
 
   MyReviewsCtl([FirebaseFirestore? firestore])
       : firestore = firestore ?? FirebaseFirestore.instance;
 
+  RxList<Review> reviewList = RxList<Review>([]);
   List<Review> get reviews => reviewList;
 
   @override
   void onReady() {
     super.onReady();
-    var uid = Get.find<AuthCtl>().user!.uid;
-    reviewList.bindStream(FirestoreDB().reviewsForUserStream(uid));
+    reviewList.bindStream(FirestoreDB().reviewsForUserStream());
     debugPrint('MyReviewsController bound to stream');
   }
 
@@ -36,6 +35,7 @@ class MyReviewsCtl extends GetxController {
       if (snapshot.docs.isNotEmpty) {
         return Review.fromSnapshot(snapshot.docs[0]);
       }
+      return null;
     });
   }
 }
