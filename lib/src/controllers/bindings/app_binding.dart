@@ -6,6 +6,7 @@ import 'package:what_next/src/controllers/reviews_controller.dart';
 import 'package:what_next/src/controllers/service_controller.dart';
 
 class AppBindings extends Bindings {
+  /// Bindings are used to inject dependencies into GetX.
   @override
   void dependencies() {
     Get.put(AuthCtl(FirebaseAuth.instance));

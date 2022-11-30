@@ -2,14 +2,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+/// Controller for authentication
 class AuthCtl extends GetxController {
   final FirebaseAuth auth;
 
+  /// Inject FirebaseAuth dependency for testing
   AuthCtl(this.auth);
 
   final Rxn<User> _firebaseUser = Rxn<User>();
+
+  /// Has the verification link been sent?
   final verificationEmailSent = false.obs;
 
+  /// The firebase user object, or null if not logged in
   User? get user => _firebaseUser.value;
 
   @override
@@ -18,6 +23,7 @@ class AuthCtl extends GetxController {
     super.onInit();
   }
 
+  /// Create a new user with email and password
   Future<void> createUser(String email, String password) async {
     try {
       await auth.createUserWithEmailAndPassword(
@@ -28,6 +34,7 @@ class AuthCtl extends GetxController {
     }
   }
 
+  /// Sign in with email and password
   Future<void> login(String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
@@ -37,6 +44,7 @@ class AuthCtl extends GetxController {
     }
   }
 
+  /// Sign out the current user
   signOut() async {
     try {
       await auth.signOut();
@@ -46,6 +54,7 @@ class AuthCtl extends GetxController {
     }
   }
 
+  /// Refresh the current user, fore example after email verification
   refreshUser() async {
     try {
       await _firebaseUser.value?.reload();
@@ -55,6 +64,7 @@ class AuthCtl extends GetxController {
     }
   }
 
+  /// Send a verification email for a new user
   verifyByEmail() async {
     try {
       await _firebaseUser.value?.sendEmailVerification();
