@@ -13,9 +13,10 @@ void main() {
       controller = ShowSearchCtl(mockDio);
     });
 
-    test('movies processed correctly', () async {
+    test('movies found correctly', () async {
       await controller.search(text: 'lord of the rings');
       expect(controller.searchResults, isNotNull);
+      expect(controller.searchResults, hasLength(22));
     });
   });
 }
