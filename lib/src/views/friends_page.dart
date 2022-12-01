@@ -101,28 +101,27 @@ class FriendsPage extends StatelessWidget {
         return ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Material(
-            elevation: 4.0,
-            child: Obx(() => Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: searchResults.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(toTitleCase(
-                                    searchResults[index].displayName)),
-                                TextButton(
-                                    child: const Text('add friend'),
-                                    onPressed: () =>
-                                        addFriend(searchResults[index]))
-                              ],
-                            ));
-                      }),
-                )),
-          ),
+              elevation: 4.0,
+              child: Obx(
+                () => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: searchResults.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                          leading: const Icon(Icons.person),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(toTitleCase(
+                                  searchResults[index].displayName)),
+                              TextButton(
+                                  child: const Text('add friend'),
+                                  onPressed: () =>
+                                      addFriend(searchResults[index]))
+                            ],
+                          ));
+                    }),
+              )),
         );
       },
     );
