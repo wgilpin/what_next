@@ -16,6 +16,8 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
 
   setUp(() async {
     debugPrint('test setUp');
+
+    Get.testMode = true;
     // fake movies
     const movies = [
       {
